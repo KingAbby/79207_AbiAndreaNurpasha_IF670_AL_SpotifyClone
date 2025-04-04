@@ -6,6 +6,8 @@ import SearchScreen from './pages/SearchScreen';
 import YourLibraryScreen from './pages/YourLibraryScreen';
 import "./global.css"
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Foundation from 'react-native-vector-icons/Foundation';
+import Octicons from 'react-native-vector-icons/Octicons';
 import { StatusBar } from 'expo-status-bar';
 
 
@@ -28,7 +30,7 @@ export default function App() {
               backgroundColor: '#121212', // Dark background for tab bar
               borderTopWidth: 0 // Menghilangkan border di atas tab bar
             },
-            tabBarActiveTintColor: '#1DB954', // Spotify green for active tab
+            tabBarActiveTintColor: '#FFFFFF', // Spotify green for active tab
             tabBarInactiveTintColor: '#B3B3B3', // Gray for inactive tabs
             // This sets the background color for all screens
             contentStyle: {
@@ -40,8 +42,10 @@ export default function App() {
             name="Home"
             component={HomeScreen}
             options={{
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="home" size={size} color={color} />
+              tabBarIcon: ({ color, size, focused }) => (
+                focused ?
+                  <Foundation name="home" size={size} color={color} /> :
+                  <Octicons name="home" size={size} color={color} />
               ),
             }}
           />
@@ -49,8 +53,10 @@ export default function App() {
             name="Search"
             component={SearchScreen}
             options={{
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="search" size={size} color={color} />
+              tabBarIcon: ({ color, size, focused }) => (
+                focused ?
+                  <Ionicons name="search-sharp" size={size} color={color} /> :
+                  <Octicons name="search" size={size} color={color} />
               ),
             }}
           />
@@ -58,8 +64,10 @@ export default function App() {
             name="Your Library"
             component={YourLibraryScreen}
             options={{
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="library" size={size} color={color} />
+              tabBarIcon: ({ color, size, focused }) => (
+                focused ?
+                <Ionicons name="library" size={size} color={color} /> :
+                <Ionicons name="library-outline" size={size} color={color} />
               ),
             }}
           />
