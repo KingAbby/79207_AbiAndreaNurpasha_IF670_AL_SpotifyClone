@@ -3,8 +3,13 @@ import { View, StyleSheet, Text, Image, TouchableOpacity, SafeAreaView, StatusBa
 import Feather from 'react-native-vector-icons/Feather';
 import { AntDesign } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
-const SearchScreen = ({ navigation }) => {
+import { useNavigation } from '@react-navigation/native';
+import ProfileButton from "../component/ProfileButton";
+
+const SearchScreen = () => {
     const [searchQuery, setSearchQuery] = useState('');
+
+    const navigation = useNavigation();
 
     const categories = [
         { id: '1', name: 'Podcasts', color: '#006450', image: require('../assets/sileighty vintage.png') },
@@ -26,11 +31,8 @@ const SearchScreen = ({ navigation }) => {
                 <View className="flex-row justify-between items-center px-5 pt-3">
                     {/* Left Side: Profile and Title */}
                     <View className="flex-row items-center">
-                        <TouchableOpacity className="mr-3">
-                            <Image
-                                source={require('../assets/sileighty vintage.png')}
-                                className="h-8 w-8 rounded-full"
-                            />
+                        <TouchableOpacity>
+                            <ProfileButton onPress={() => navigation.openDrawer()} />
                         </TouchableOpacity>
                         <Text className="text-white text-3xl font-bold">Search</Text>
                     </View>
