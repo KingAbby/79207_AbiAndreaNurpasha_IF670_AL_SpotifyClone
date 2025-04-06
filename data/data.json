@@ -1,0 +1,240 @@
+{
+  "users": [
+    {
+      "id": "user1",
+      "name": "Alex Johnson",
+      "email": "alex@example.com",
+      "profileImage": "https://randomuser.me/api/portraits/men/32.jpg",
+      "premium": true
+    },
+    {
+      "id": "user2",
+      "name": "Sarah Miller",
+      "email": "sarah@example.com",
+      "profileImage": "https://randomuser.me/api/portraits/women/44.jpg",
+      "premium": false
+    }
+  ],
+  "artists": [
+    {
+      "id": "artist1",
+      "name": "The Weeknd",
+      "image": "https://i.scdn.co/image/ab6761610000e5eb214f3cf1cbe7139c1e26ffbb",
+      "monthlyListeners": 85000000,
+      "about": "Abel Makkonen Tesfaye, known professionally as the Weeknd, is a Canadian singer, songwriter, and record producer."
+    },
+    {
+      "id": "artist2",
+      "name": "Doja Cat",
+      "image": "https://i.scdn.co/image/ab6761610000e5eb727a2ac15afe659be999beba",
+      "monthlyListeners": 52000000,
+      "about": "Amala Ratna Zandile Dlamini, known professionally as Doja Cat, is an American rapper, singer, and songwriter."
+    },
+    {
+      "id": "artist3",
+      "name": "Taylor Swift",
+      "image": "https://i.scdn.co/image/ab6761610000e5eb6a224073987b930f99adc706",
+      "monthlyListeners": 93000000,
+      "about": "Taylor Alison Swift is an American singer-songwriter. Her narrative songwriting, which often centers around her personal life, has received widespread critical acclaim and media coverage."
+    },
+    {
+      "id": "artist4",
+      "name": "Billie Eilish",
+      "image": "https://i.scdn.co/image/ab6761610000e5ebc5ceb05f152ef5b5ebcaa568",
+      "monthlyListeners": 65000000,
+      "about": "Billie Eilish Pirate Baird O'Connell is an American singer and songwriter. She first gained public attention in 2015 with her debut single 'Ocean Eyes'."
+    }
+  ],
+  "albums": [
+    {
+      "id": "album1",
+      "title": "After Hours",
+      "artistId": "artist1",
+      "cover": "https://i.scdn.co/image/ab67616d0000b273ef017e899c0547961e10efe7",
+      "releaseYear": 2020,
+      "genre": "R&B/Pop"
+    },
+    {
+      "id": "album2",
+      "title": "Planet Her",
+      "artistId": "artist2",
+      "cover": "https://i.scdn.co/image/ab67616d0000b273a3c6359e1e25f14917e0662e",
+      "releaseYear": 2021,
+      "genre": "Pop/R&B"
+    },
+    {
+      "id": "album3",
+      "title": "Midnights",
+      "artistId": "artist3",
+      "cover": "https://i.scdn.co/image/ab67616d0000b2739e0b965dd27db4e4e0df10d4",
+      "releaseYear": 2022,
+      "genre": "Pop/Alternative"
+    },
+    {
+      "id": "album4",
+      "title": "Happier Than Ever",
+      "artistId": "artist4",
+      "cover": "https://i.scdn.co/image/ab67616d0000b273c347e85dc0442b83e534e3b3",
+      "releaseYear": 2021,
+      "genre": "Alternative/Pop"
+    }
+  ],
+  "songs": [
+    {
+      "id": "song1",
+      "title": "Blinding Lights",
+      "artistId": "artist1",
+      "albumId": "album1",
+      "duration": 200,
+      "url": "https://example.com/song1.mp3",
+      "image": "https://i.scdn.co/image/ab67616d0000b273ef017e899c0547961e10efe7"
+    },
+    {
+      "id": "song2",
+      "title": "Save Your Tears",
+      "artistId": "artist1",
+      "albumId": "album1",
+      "duration": 215,
+      "url": "https://example.com/song2.mp3",
+      "image": "https://i.scdn.co/image/ab67616d0000b273ef017e899c0547961e10efe7"
+    },
+    {
+      "id": "song3",
+      "title": "Kiss Me More",
+      "artistId": "artist2",
+      "albumId": "album2",
+      "duration": 208,
+      "url": "https://example.com/song3.mp3",
+      "image": "https://i.scdn.co/image/ab67616d0000b273a3c6359e1e25f14917e0662e"
+    },
+    {
+      "id": "song4",
+      "title": "Woman",
+      "artistId": "artist2",
+      "albumId": "album2",
+      "duration": 172,
+      "url": "https://example.com/song4.mp3",
+      "image": "https://i.scdn.co/image/ab67616d0000b273a3c6359e1e25f14917e0662e"
+    },
+    {
+      "id": "song5",
+      "title": "Anti-Hero",
+      "artistId": "artist3",
+      "albumId": "album3",
+      "duration": 200,
+      "url": "https://example.com/song5.mp3",
+      "image": "https://i.scdn.co/image/ab67616d0000b2739e0b965dd27db4e4e0df10d4"
+    },
+    {
+      "id": "song6",
+      "title": "Lavender Haze",
+      "artistId": "artist3",
+      "albumId": "album3",
+      "duration": 202,
+      "url": "https://example.com/song6.mp3",
+      "image": "https://i.scdn.co/image/ab67616d0000b2739e0b965dd27db4e4e0df10d4"
+    },
+    {
+      "id": "song7",
+      "title": "Happier Than Ever",
+      "artistId": "artist4",
+      "albumId": "album4",
+      "duration": 298,
+      "url": "https://example.com/song7.mp3",
+      "image": "https://i.scdn.co/image/ab67616d0000b273c347e85dc0442b83e534e3b3"
+    },
+    {
+      "id": "song8",
+      "title": "Therefore I Am",
+      "artistId": "artist4",
+      "albumId": "album4",
+      "duration": 174,
+      "url": "https://example.com/song8.mp3",
+      "image": "https://i.scdn.co/image/ab67616d0000b273c347e85dc0442b83e534e3b3"
+    }
+  ],
+  "playlists": [
+    {
+      "id": "playlist1",
+      "name": "Chill Vibes",
+      "description": "Relaxing tunes for your downtime",
+      "cover": "https://i.scdn.co/image/ab67706f00000002aa93fe4e8c2d24fc62556cba",
+      "createdBy": "user1",
+      "songs": ["song1", "song3", "song6", "song7"],
+      "followers": 1250
+    },
+    {
+      "id": "playlist2",
+      "name": "Workout Mix",
+      "description": "High energy tracks to keep you motivated",
+      "cover": "https://i.scdn.co/image/ab67706f00000002e6095c382c2853d4bdc9969b",
+      "createdBy": "user2",
+      "songs": ["song2", "song4", "song5", "song8"],
+      "followers": 890
+    },
+    {
+      "id": "playlist3",
+      "name": "Today's Top Hits",
+      "description": "The most popular songs right now",
+      "cover": "https://i.scdn.co/image/ab67706f00000002c53d02f3f162af43ca97c184",
+      "createdBy": "spotify",
+      "songs": ["song3", "song5", "song7", "song2"],
+      "followers": 28500000
+    },
+    {
+      "id": "playlist4",
+      "name": "Peaceful Piano",
+      "description": "Relax and indulge with beautiful piano pieces",
+      "cover": "https://i.scdn.co/image/ab67706f00000002ca5a7517156021292e5663a6",
+      "createdBy": "spotify",
+      "songs": [],
+      "followers": 12400000
+    }
+  ],
+  "userLibrary": {
+    "user1": {
+      "likedSongs": ["song1", "song3", "song5", "song7"],
+      "followedArtists": ["artist1", "artist3"],
+      "savedPlaylists": ["playlist1", "playlist3"],
+      "recentlyPlayed": ["song7", "song1", "song5", "song3"]
+    },
+    "user2": {
+      "likedSongs": ["song2", "song4", "song6", "song8"],
+      "followedArtists": ["artist2", "artist4"],
+      "savedPlaylists": ["playlist2", "playlist4"],
+      "recentlyPlayed": ["song8", "song2", "song6", "song4"]
+    }
+  },
+  "categories": [
+    {
+      "id": "category1",
+      "name": "Pop",
+      "image": "https://i.scdn.co/image/ab67706f000000023c5a4aef5bf9efe0d038d844"
+    },
+    {
+      "id": "category2",
+      "name": "Hip-Hop",
+      "image": "https://i.scdn.co/image/ab67706f000000025a051a7b4c82f042b8390ccd"
+    },
+    {
+      "id": "category3",
+      "name": "Rock",
+      "image": "https://i.scdn.co/image/ab67706f00000002fe6d8d1019d5b302213e3730"
+    },
+    {
+      "id": "category4",
+      "name": "Chill",
+      "image": "https://i.scdn.co/image/ab67706f000000025f0ff9251e3cfe641160dc31"
+    },
+    {
+      "id": "category5",
+      "name": "Workout",
+      "image": "https://i.scdn.co/image/ab67706f000000029249b35f23fb596b6f006a15"
+    },
+    {
+      "id": "category6",
+      "name": "Focus",
+      "image": "https://i.scdn.co/image/ab67706f00000002e4eadd417a05b2546e866934"
+    }
+  ]
+}

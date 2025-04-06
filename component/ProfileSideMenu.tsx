@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import { AntDesign, EvilIcons, Ionicons, MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { ROUTES } from '../navigation/routes';
 
 const ProfileSideMenu = (props) => {
     const navigation = useNavigation();
@@ -12,7 +13,10 @@ const ProfileSideMenu = (props) => {
             <View className='flex flex-col gap-2'>
                 <TouchableOpacity
                     className="flex flex-row gap-5 py-5"
-                    onPress={() => navigation.navigate('Profile')}
+                    onPress={() => {
+                        props.navigation.closeDrawer();
+                        props.navigation.navigate(ROUTES.PROFILE);
+                    }}
                 >
                     <View>
                         <Image
@@ -51,7 +55,11 @@ const ProfileSideMenu = (props) => {
                         <Text className="text-white text-base">Recents</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity className="flex-row items-center gap-5" onPress={() => props.navigation.navigate('Settings')}>
+                    <TouchableOpacity className="flex-row items-center gap-5" onPress={() => {
+                        props.navigation.closeDrawer();
+                        props.navigation.navigate(ROUTES.SETTINGS);
+                    }}
+                    >
                         <EvilIcons name="gear" size={24} color="white" />
                         <Text className="text-white text-base">Settings & Privacy</Text>
                     </TouchableOpacity>
