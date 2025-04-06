@@ -2,8 +2,14 @@ import React from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity, SafeAreaView, StatusBar, ScrollView } from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { AntDesign } from '@expo/vector-icons';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
-const HomeScreen = ({ navigation }) => {
+import { useNavigation } from '@react-navigation/native';
+import ProfileButton from '../component/ProfileButton';
+
+const HomeScreen = () => {
+    const navigation = useNavigation();
+
     return (
         <SafeAreaView style={styles.container} className="bg-[#121212]">
             {/* Header */}
@@ -11,11 +17,8 @@ const HomeScreen = ({ navigation }) => {
                 <View className="flex-row justify-between items-center px-5 pt-3">
                     {/* Left Side: Profile and Title */}
                     <View className="flex-row items-center">
-                        <TouchableOpacity className="mr-3">
-                            <Image
-                                source={require('../assets/sileighty vintage.png')}
-                                className="h-8 w-8 rounded-full"
-                            />
+                        <TouchableOpacity>
+                            <ProfileButton onPress={() => navigation.openDrawer()} />
                         </TouchableOpacity>
                         {/* Filter Options */}
                         <ScrollView
