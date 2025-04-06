@@ -1,13 +1,24 @@
-import { View, Text, TouchableOpacity, Image, StatusBar, ScrollView, StyleSheet, Button } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StatusBar, ScrollView, StyleSheet, Modal, Pressable } from 'react-native';
 import * as React from 'react';
+import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Entypo, FontAwesome, FontAwesome6, Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import { BlurView } from 'expo-blur';
+import { ROUTES } from '../navigation/routes';
 
 const Settings = () => {
     const navigation = useNavigation();
     const headerHeight = Constants.statusBarHeight + 50;
+    const [logoutModalVisible, setLogoutModalVisible] = useState(false);
+
+    const handleLogout = () => {
+        setLogoutModalVisible(false);
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'Auth' }]
+        });
+    };
 
     return (
         <View className="flex-1 bg-[#121212]">
@@ -41,7 +52,7 @@ const Settings = () => {
                 <View className="flex flex-col gap-7 p-4">
                     <TouchableOpacity
                         className='flex flex-row justify-between items-center'
-                        onPress={() => navigation.navigate('Profile')}
+                        onPress={() => navigation.navigate(ROUTES.PROFILE)}
                     >
                         <View className="flex flex-row gap-5">
                             <View>
@@ -116,16 +127,56 @@ const Settings = () => {
                     <View className="items-center mt-8">
                         <TouchableOpacity
                             className='bg-white rounded-full px-12 py-3'
-                            onPress={() => console.log('Log out pressed')}
+                            onPress={() => setLogoutModalVisible(true)}
                         >
                             <Text className='text-black text-lg font-bold text-center'>Log out</Text>
                         </TouchableOpacity>
                     </View>
 
+                    {/* Logout Confirmation Modal */}
+                    <Modal
+                        animationType="fade"
+                        transparent={true}
+                        visible={logoutModalVisible}
+                        onRequestClose={() => setLogoutModalVisible(false)}
+                    >
+                        <Pressable
+                            style={styles.modalOverlay}
+                            onPress={() => setLogoutModalVisible(false)}
+                        >
+                            <View
+                                className="bg-[#282828] rounded-2xl w-4/5 mx-auto p-5 gap-10"
+                                onStartShouldSetResponder={() => true}
+                                onTouchEnd={(e) => e.stopPropagation()}
+                            >
+                                <View className='flex-col items-center gap-1'>
+                                    <Text className="text-white text-xl font-bold">Log out</Text>
+                                    <Text className="text-white text-base">Are you sure you want to log out?</Text>
+                                </View>
+
+
+                                <View className="flex-row justify-between gap-5">
+                                    <TouchableOpacity
+                                        className="flex-1 border border-white rounded-full py-2 "
+                                        onPress={() => setLogoutModalVisible(false)}
+                                    >
+                                        <Text className="text-white text-center font-semibold">Cancel</Text>
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity
+                                        className="flex-1 bg-white rounded-full py-2 "
+                                        onPress={handleLogout}
+                                    >
+                                        <Text className="text-black text-center font-semibold">Log out</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </Pressable>
+                    </Modal>
 
                 </View>
-            </ScrollView>
-        </View>
+            </ScrollView >
+        </View >
     );
 };
 
@@ -146,6 +197,12 @@ const styles = StyleSheet.create({
         elevation: 5,
         backgroundColor: 'rgba(18, 18, 18, 0.75)'
     },
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
 });
 
 export default Settings;

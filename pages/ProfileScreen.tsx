@@ -1,9 +1,10 @@
-import React, { useState, useRef } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, StatusBar, Animated } from "react-native";
+import React, { useState, useRef, useEffect } from 'react';
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, StatusBar, Animated, BackHandler } from "react-native";
 import { Ionicons, MaterialIcons, FontAwesome6, Entypo } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
 import { useNavigation } from '@react-navigation/native';
 import Constants from 'expo-constants';
+import { ROUTES } from '../navigation/routes';
 
 const ProfileScreen = () => {
     const navigation = useNavigation();
@@ -38,6 +39,8 @@ const ProfileScreen = () => {
         extrapolate: 'clamp'
     });
 
+    
+
     return (
         <View className="flex-1 bg-[#121212]">
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
@@ -49,6 +52,7 @@ const ProfileScreen = () => {
                 style={[styles.headerContainer, { paddingTop: Constants.statusBarHeight }]}
             >
                 <View className="flex-row items-center h-16 px-4 justify-center relative">
+                    {/* Back button */}
                     <TouchableOpacity
                         onPress={() => navigation.goBack()}
                         className="absolute left-4"
