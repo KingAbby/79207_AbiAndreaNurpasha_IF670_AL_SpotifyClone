@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, StackActions } from '@react-navigation/native';
 import { FontAwesome6, Entypo, FontAwesome, Feather } from '@expo/vector-icons';
 import { LinearGradient } from "expo-linear-gradient";
 import { ROUTES } from '../../navigation/routes';
@@ -76,7 +76,22 @@ const SignupFormScreen = () => {
                                 <Text className='text-center text-white'>Already have an Account?</Text>
                                 <TouchableOpacity
                                     className='self-center'
-                                    onPress={() => navigation.navigate(ROUTES.LOGIN_FORM)}
+                                    onPress={() => {
+                                        // Cari kondisi navigasi saat ini
+                                        const state = navigation.getState();
+
+                                        // Cek apakah ada LoginForm di stack
+                                        const loginFormIndex = state.routes.findIndex(route => route.name === ROUTES.LOGIN_FORM);
+
+                                        if (loginFormIndex >= 0) {
+                                            // Jika LoginForm ada di stack, kembalikan ke posisi tersebut
+                                            const popAction = StackActions.pop(state.index - loginFormIndex);
+                                            navigation.dispatch(popAction);
+                                        } else {
+                                            // Jika tidak ada, navigasi ke halaman baru
+                                            navigation.navigate(ROUTES.LOGIN_FORM);
+                                        }
+                                    }}
                                 >
                                     <Text className='text-center text-white font-bold'>Log in</Text>
                                 </TouchableOpacity>

@@ -1,28 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, Image, TouchableOpacity, SafeAreaView, StatusBar, TextInput, ScrollView } from "react-native";
-import Feather from 'react-native-vector-icons/Feather';
-import { AntDesign } from '@expo/vector-icons';
-import { Octicons } from '@expo/vector-icons';
+import { AntDesign, Octicons, Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import ProfileButton from "../component/ProfileButton";
+import musicData from '../data/data.json';
+import { ROUTES } from '../navigation/routes';
 
 const SearchScreen = () => {
     const [searchQuery, setSearchQuery] = useState('');
-
+    const [categories, setCategories] = useState([]);
     const navigation = useNavigation();
 
-    const categories = [
-        { id: '1', name: 'Podcasts', color: '#006450', image: require('../assets/sileighty vintage.png') },
-        { id: '2', name: 'Live Events', color: '#8400E7', image: require('../assets/sileighty vintage.png') },
-        { id: '3', name: 'Made For You', color: '#1E3264', image: require('../assets/sileighty vintage.png') },
-        { id: '4', name: 'New Releases', color: '#E8115B', image: require('../assets/sileighty vintage.png') },
-        { id: '5', name: 'Pop', color: '#148A08', image: require('../assets/sileighty vintage.png') },
-        { id: '6', name: 'Hip-Hop', color: '#BC5900', image: require('../assets/sileighty vintage.png') },
-        { id: '7', name: 'Rock', color: '#E91429', image: require('../assets/sileighty vintage.png') },
-        { id: '8', name: 'Mood', color: '#DC148C', image: require('../assets/sileighty vintage.png') },
-        { id: '9', name: 'Charts', color: '#8D67AB', image: require('../assets/sileighty vintage.png') },
-        { id: '10', name: 'Chill', color: '#0D73EC', image: require('../assets/sileighty vintage.png') },
-    ];
+    useEffect(() => {
+        // Load categories from data.json
+        setCategories(musicData.categories);
+    }, []);
 
     return (
         <SafeAreaView style={styles.container} className="bg-[#121212]">
@@ -37,7 +29,7 @@ const SearchScreen = () => {
                         <Text className="text-white text-3xl font-bold">Search</Text>
                     </View>
 
-                    {/* Right Side: Search and Add buttons */}
+                    {/* Right Side: Camera buttons */}
                     <View>
                         <TouchableOpacity>
                             <Feather name="camera" size={24} color="white" />
@@ -46,25 +38,19 @@ const SearchScreen = () => {
                 </View>
 
                 {/* Search Bar */}
-
-                <View className="px-4 py-2 bg-[#121212]">
+                <TouchableOpacity
+                    className="px-4 py-2 bg-[#121212]"
+                    onPress={() => navigation.navigate(ROUTES.SEARCH_DETAIL)}
+                >
                     <View className="flex-row items-center bg-white rounded-md px-5 py-4">
                         <Octicons name="search" size={25} color="#121212" />
-                        <TextInput
-                            placeholder="What do you want to listen to?"
-                            placeholderTextColor="#000000"
-                            value={searchQuery}
-                            onChangeText={setSearchQuery}
-                            className="flex-1 ml-2 text-black font-semibold"
-                            returnKeyType="search"
-                        />
-                        {searchQuery.length > 0 && (
-                            <TouchableOpacity onPress={() => setSearchQuery('')}>
-                                <AntDesign name="close" size={20} color="#121212" />
-                            </TouchableOpacity>
-                        )}
+                        <Text
+                            className="flex-1 ml-2 text-gray-500 font-semibold"
+                        >
+                            What do you want to listen to?
+                        </Text>
                     </View>
-                </View>
+                </TouchableOpacity>
             </View>
 
 
@@ -91,7 +77,7 @@ const SearchScreen = () => {
                             >
                                 <Text className="text-white font-bold text-base p-3">{category.name}</Text>
                                 <Image
-                                    source={category.image}
+                                    source={{ uri: category.image }}
                                     style={styles.categoryImage}
                                 />
                             </TouchableOpacity>

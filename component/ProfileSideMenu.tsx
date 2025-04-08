@@ -1,12 +1,35 @@
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import { AntDesign, EvilIcons, Ionicons, MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { ROUTES } from '../navigation/routes';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfileSideMenu = (props) => {
     const navigation = useNavigation();
+    const [username, setUsername] = useState('User');
+
+    useEffect(() => {
+        // Load the username when component mounts
+        const loadUsername = async () => {
+            try {
+                const storedName = await AsyncStorage.getItem('userDisplayName');
+                if (storedName) {
+                    setUsername(storedName);
+                }
+            } catch (error) {
+                console.error('Error loading username:', error);
+            }
+        };
+
+        loadUsername();
+
+        // Set up listener for when the drawer opens to refresh the username
+        const unsubscribe = navigation.addListener('focus', loadUsername);
+        return unsubscribe;
+    }, [navigation]);
 
     return (
         <DrawerContentScrollView {...props} className="flex-1 pt-8">
@@ -25,7 +48,7 @@ const ProfileSideMenu = (props) => {
                         />
                     </View>
                     <View className='flex flex-col gap-1'>
-                        <Text className="text-white text-xl font-bold">Abii</Text>
+                        <Text className="text-white text-xl font-bold">{username}</Text>
                         <Text className="text-gray-400">View Profile</Text>
                     </View>
                 </TouchableOpacity>

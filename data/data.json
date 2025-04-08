@@ -1,20 +1,4 @@
 {
-  "users": [
-    {
-      "id": "user1",
-      "name": "Alex Johnson",
-      "email": "alex@example.com",
-      "profileImage": "https://randomuser.me/api/portraits/men/32.jpg",
-      "premium": true
-    },
-    {
-      "id": "user2",
-      "name": "Sarah Miller",
-      "email": "sarah@example.com",
-      "profileImage": "https://randomuser.me/api/portraits/women/44.jpg",
-      "premium": false
-    }
-  ],
   "artists": [
     {
       "id": "artist1",
@@ -39,10 +23,38 @@
     },
     {
       "id": "artist4",
-      "name": "Billie Eilish",
-      "image": "https://i.scdn.co/image/ab6761610000e5ebc5ceb05f152ef5b5ebcaa568",
-      "monthlyListeners": 65000000,
-      "about": "Billie Eilish Pirate Baird O'Connell is an American singer and songwriter. She first gained public attention in 2015 with her debut single 'Ocean Eyes'."
+      "name": "Scorpions",
+      "image": "assets/artistcover/scorpions.png",
+      "monthlyListeners": 15500000,
+      "about": "Scorpions are a German rock band formed in 1965 in Hanover by Rudolf Schenker. Since the band's inception, its musical style has ranged from hard rock to heavy metal. The band's lineup includes Klaus Meine (vocals), Rudolf Schenker (rhythm guitar), Matthias Jabs (lead guitar), Paweł Mąciwoda (bass), and Mikkey Dee (drums)."
+    },
+    {
+      "id": "artist5",
+      "name": "Linkin Park",
+      "image": "assets/artistcover/linkinpark.png",
+      "monthlyListeners": 42000000,
+      "about": "Linkin Park is an American rock band from Agoura Hills, California. The band's current lineup comprises vocalist/rhythm guitarist Mike Shinoda, lead guitarist Brad Delson, bassist Dave Farrell, DJ/turntablist Joe Hahn and drummer Rob Bourdon."
+    },
+    {
+      "id": "artist6",
+      "name": "Drake",
+      "image": "https://i.scdn.co/image/ab6761610000e5eb4293385d324db8558179afd9",
+      "monthlyListeners": 76000000,
+      "about": "Aubrey Drake Graham is a Canadian rapper, singer, and actor. An influential figure in modern popular music, Drake has been credited for popularizing singing and R&B sensibilities in hip hop."
+    },
+    {
+      "id": "artist7",
+      "name": "Coldplay",
+      "image": "https://i.scdn.co/image/ab6761610000e5eb989ed05e1f0570cc4726c2d3",
+      "monthlyListeners": 58000000,
+      "about": "Coldplay are a British rock band formed in London in 1997. They consist of vocalist and pianist Chris Martin, guitarist Jonny Buckland, bassist Guy Berryman, drummer Will Champion and creative director Phil Harvey."
+    },
+    {
+      "id": "artist8",
+      "name": "Ariana Grande",
+      "image": "https://i.scdn.co/image/ab6761610000e5ebcdce7620dc940db079bf4952",
+      "monthlyListeners": 72000000,
+      "about": "Ariana Grande-Butera is an American singer, songwriter, and actress. Her four-octave vocal range has received critical acclaim, and her personal life has been the subject of widespread media attention."
     }
   ],
   "albums": [
@@ -72,11 +84,43 @@
     },
     {
       "id": "album4",
-      "title": "Happier Than Ever",
+      "title": "Millennium",
       "artistId": "artist4",
-      "cover": "https://i.scdn.co/image/ab67616d0000b273c347e85dc0442b83e534e3b3",
+      "cover": "https://i.scdn.co/image/ab67616d0000b273a2a152d782a6b5d208365ab9",
+      "releaseYear": 1999,
+      "genre": "Pop"
+    },
+    {
+      "id": "album5",
+      "title": "Hybrid Theory",
+      "artistId": "artist5",
+      "cover": "https://i.scdn.co/image/ab67616d0000b273e2f039481babe23b3f43581e",
+      "releaseYear": 2000,
+      "genre": "Nu Metal/Rock"
+    },
+    {
+      "id": "album6",
+      "title": "Certified Lover Boy",
+      "artistId": "artist6",
+      "cover": "https://i.scdn.co/image/ab67616d0000b2739416ed64daf84936d89e671c",
       "releaseYear": 2021,
-      "genre": "Alternative/Pop"
+      "genre": "Hip-Hop/Rap"
+    },
+    {
+      "id": "album7",
+      "title": "Music of the Spheres",
+      "artistId": "artist7",
+      "cover": "https://i.scdn.co/image/ab67616d0000b273ec10f247b100da1ce0d80b6d",
+      "releaseYear": 2021,
+      "genre": "Pop/Rock"
+    },
+    {
+      "id": "album8",
+      "title": "Positions",
+      "artistId": "artist8",
+      "cover": "https://i.scdn.co/image/ab67616d0000b2735ef878a782c987d38d82b605",
+      "releaseYear": 2020,
+      "genre": "Pop/R&B"
     }
   ],
   "songs": [
@@ -87,7 +131,8 @@
       "albumId": "album1",
       "duration": 200,
       "url": "https://example.com/song1.mp3",
-      "image": "https://i.scdn.co/image/ab67616d0000b273ef017e899c0547961e10efe7"
+      "image": "assets/songcover/blindinglight.png",
+      "lyrics": "I've been tryna call / I've been on my own for long enough / Maybe you can show me how to love, maybe / I'm going through withdrawals / You don't even have to do too much / You can turn me on with just a touch, baby"
     },
     {
       "id": "song2",
@@ -96,7 +141,8 @@
       "albumId": "album1",
       "duration": 215,
       "url": "https://example.com/song2.mp3",
-      "image": "https://i.scdn.co/image/ab67616d0000b273ef017e899c0547961e10efe7"
+      "image": "assets/songcover/blindinglight.png",
+      "lyrics": "Save your tears for another day / I don't know why I run away / I make you cry when I run away / You could have asked me why I broke your heart"
     },
     {
       "id": "song3",
@@ -105,7 +151,8 @@
       "albumId": "album2",
       "duration": 208,
       "url": "https://example.com/song3.mp3",
-      "image": "https://i.scdn.co/image/ab67616d0000b273a3c6359e1e25f14917e0662e"
+      "image": "assets/songcover/kissmemore.png",
+      "lyrics": "Can you kiss me more? / We're so young, boy / We ain't got nothin' to lose / It's just principle / Baby, hold me close / Don't let me go / Can you kiss me once then kiss me twice?"
     },
     {
       "id": "song4",
@@ -114,7 +161,8 @@
       "albumId": "album2",
       "duration": 172,
       "url": "https://example.com/song4.mp3",
-      "image": "https://i.scdn.co/image/ab67616d0000b273a3c6359e1e25f14917e0662e"
+      "image": "assets/songcover/woman.png",
+      "lyrics": "Let me be your woman / Woman, woman, woman / I can be the one / Believe me, I can take you far / I'm a woman, baby / Don't you ever forget it's working in my favor"
     },
     {
       "id": "song5",
@@ -123,7 +171,8 @@
       "albumId": "album3",
       "duration": 200,
       "url": "https://example.com/song5.mp3",
-      "image": "https://i.scdn.co/image/ab67616d0000b2739e0b965dd27db4e4e0df10d4"
+      "image": "assets/songcover/anti-hero.png",
+      "lyrics": "It's me, hi / I'm the problem, it's me / I know everyone thinks I'm the villain / I go through phases / Midnights become my afternoons / When my depression works the graveyard shift"
     },
     {
       "id": "song6",
@@ -132,25 +181,108 @@
       "albumId": "album3",
       "duration": 202,
       "url": "https://example.com/song6.mp3",
-      "image": "https://i.scdn.co/image/ab67616d0000b2739e0b965dd27db4e4e0df10d4"
+      "image": "https://i.scdn.co/image/ab6761610000e5eb6a224073987b930f99adc706",
+      "lyrics": "Lavender haze all in my room / Meet me at midnight / I feel the lavender haze creeping up on me / Surreal, I'm damned if I do give a damn what people say / No deal, the rumors fade away"
     },
     {
       "id": "song7",
-      "title": "Happier Than Ever",
+      "title": "Rock You Like a Hurricane",
       "artistId": "artist4",
       "albumId": "album4",
-      "duration": 298,
+      "duration": 252,
       "url": "https://example.com/song7.mp3",
-      "image": "https://i.scdn.co/image/ab67616d0000b273c347e85dc0442b83e534e3b3"
+      "image": "assets/songcover/rockyoulikeahurricane.png",
+      "lyrics": "Here I am, rock you like a hurricane / My body is burning, it starts to shout / Desire is coming, it breaks out loud / Lust is in cages till storm breaks loose"
     },
     {
       "id": "song8",
-      "title": "Therefore I Am",
+      "title": "Still Loving You",
       "artistId": "artist4",
       "albumId": "album4",
-      "duration": 174,
+      "duration": 403,
       "url": "https://example.com/song8.mp3",
-      "image": "https://i.scdn.co/image/ab67616d0000b273c347e85dc0442b83e534e3b3"
+      "image": "assets/songcover/stilllovingyou.png",
+      "lyrics": "Time, it needs time to win back your love again / I will be there, I will be there / Love, only love can bring back your love someday / I will be there, I will be there"
+    },
+    {
+      "id": "song9",
+      "title": "In The End",
+      "artistId": "artist5",
+      "albumId": "album5",
+      "duration": 216,
+      "url": "https://example.com/song9.mp3",
+      "image": "assets/songcover/intheend.png",
+      "lyrics": "I tried so hard and got so far / But in the end, it doesn't even matter / I had to fall to lose it all / But in the end, it doesn't even matter"
+    },
+    {
+      "id": "song10",
+      "title": "Numb",
+      "artistId": "artist5",
+      "albumId": "album5",
+      "duration": 187,
+      "url": "https://example.com/song10.mp3",
+      "image": "assets/songcover/numb.png",
+      "lyrics": "I've become so numb, I can't feel you there / Become so tired, so much more aware / I'm becoming this, all I want to do / Is be more like me and be less like you"
+    },
+    {
+      "id": "song11",
+      "title": "Way 2 Sexy",
+      "artistId": "artist6",
+      "albumId": "album6",
+      "duration": 256,
+      "url": "https://example.com/song11.mp3",
+      "image": "https://i.scdn.co/image/ab67616d0000b2739416ed64daf84936d89e671c",
+      "lyrics": "I'm feeling too sexy to accept requests / And I'm way too sexy to go unprotected / I'm way too sexy to go unprotected / I'm way too sexy to let that happen"
+    },
+    {
+      "id": "song12",
+      "title": "Girls Want Girls",
+      "artistId": "artist6",
+      "albumId": "album6",
+      "duration": 227,
+      "url": "https://example.com/song12.mp3",
+      "image": "https://i.scdn.co/image/ab67616d0000b2739416ed64daf84936d89e671c",
+      "lyrics": "Girls want girls where I'm from / Wait, that's just how it goes / I mean, doesn't everybody? / Yeah, I want what they want / Everything's aligned"
+    },
+    {
+      "id": "song13",
+      "title": "My Universe",
+      "artistId": "artist7",
+      "albumId": "album7",
+      "duration": 228,
+      "url": "https://example.com/song13.mp3",
+      "image": "https://i.scdn.co/image/ab67616d0000b273ec10f247b100da1ce0d80b6d",
+      "lyrics": "You, you are my universe and I / Just want to put you first / And you, you are my universe / And you make my world light up inside"
+    },
+    {
+      "id": "song14",
+      "title": "Higher Power",
+      "artistId": "artist7",
+      "albumId": "album7",
+      "duration": 209,
+      "url": "https://example.com/song14.mp3",
+      "image": "https://i.scdn.co/image/ab67616d0000b273ec10f247b100da1ce0d80b6d",
+      "lyrics": "I'm like a broken record, I'm like a broken record / That you let play / But I'm in this together, I'm in this forever / We're floating away"
+    },
+    {
+      "id": "song15",
+      "title": "Positions",
+      "artistId": "artist8",
+      "albumId": "album8",
+      "duration": 173,
+      "url": "https://example.com/song15.mp3",
+      "image": "https://i.scdn.co/image/ab67616d0000b2735ef878a782c987d38d82b605",
+      "lyrics": "Switching the positions for you / Cooking in the kitchen and I'm in the bedroom / I'm in the Olympics, way I'm jumping through hoops / Know my love infinite, nothing I wouldn't do"
+    },
+    {
+      "id": "song16",
+      "title": "34+35",
+      "artistId": "artist8",
+      "albumId": "album8",
+      "duration": 173,
+      "url": "https://example.com/song16.mp3",
+      "image": "https://i.scdn.co/image/ab67616d0000b2735ef878a782c987d38d82b605",
+      "lyrics": "If I put it quite plainly / Just give me the numbers / I'm counting on you to keep this between you and I / Let me just say, the math adds up if you know what I mean"
     }
   ],
   "playlists": [
@@ -160,25 +292,25 @@
       "description": "Relaxing tunes for your downtime",
       "cover": "https://i.scdn.co/image/ab67706f00000002aa93fe4e8c2d24fc62556cba",
       "createdBy": "user1",
-      "songs": ["song1", "song3", "song6", "song7"],
+      "songs": ["song1", "song3", "song6", "song7", "song9", "song14"],
       "followers": 1250
     },
     {
       "id": "playlist2",
       "name": "Workout Mix",
       "description": "High energy tracks to keep you motivated",
-      "cover": "https://i.scdn.co/image/ab67706f00000002e6095c382c2853d4bdc9969b",
-      "createdBy": "user2",
-      "songs": ["song2", "song4", "song5", "song8"],
+      "cover": "https://i.scdn.co/image/ab67706f000000029249b35f23fb596b6f006a15",
+      "createdBy": "user1",
+      "songs": ["song2", "song4", "song5", "song8", "song10", "song11", "song15"],
       "followers": 890
     },
     {
       "id": "playlist3",
       "name": "Today's Top Hits",
       "description": "The most popular songs right now",
-      "cover": "https://i.scdn.co/image/ab67706f00000002c53d02f3f162af43ca97c184",
+      "cover": "https://charts-images.scdn.co/assets/locale_en/regional/weekly/region_global_default.jpg",
       "createdBy": "spotify",
-      "songs": ["song3", "song5", "song7", "song2"],
+      "songs": ["song3", "song5", "song7", "song2", "song11", "song15"],
       "followers": 28500000
     },
     {
@@ -187,54 +319,129 @@
       "description": "Relax and indulge with beautiful piano pieces",
       "cover": "https://i.scdn.co/image/ab67706f00000002ca5a7517156021292e5663a6",
       "createdBy": "spotify",
-      "songs": [],
+      "songs": ["song14", "song6", "song7"],
       "followers": 12400000
+    },
+    {
+      "id": "playlist5",
+      "name": "Rock Classics",
+      "description": "Rock legends & epic anthems that continue to inspire generations",
+      "cover": "https://i.scdn.co/image/ab67706f00000002fe6d8d1019d5b302213e3730",
+      "createdBy": "spotify",
+      "songs": ["song9", "song10"],
+      "followers": 8760000
+    },
+    {
+      "id": "playlist6",
+      "name": "Rap Caviar",
+      "description": "Hip-Hop's heavy hitters and rising stars",
+      "cover": "https://i.scdn.co/image/ab67fb8200005caf7e11c8413dc33c00740579c1",
+      "createdBy": "spotify",
+      "songs": ["song11", "song12", "song4"],
+      "followers": 15300000
+    },
+    {
+      "id": "playlist7",
+      "name": "Pop Mix",
+      "description": "Top pop hits and trending songs",
+      "cover": "https://seed-mix-image.spotifycdn.com/v6/img/pop/66CXWjxzNUsdJxJ2JdwvnR/en/large",
+      "createdBy": "user1",
+      "songs": ["song15", "song16", "song5", "song6"],
+      "followers": 580
     }
   ],
   "userLibrary": {
     "user1": {
-      "likedSongs": ["song1", "song3", "song5", "song7"],
-      "followedArtists": ["artist1", "artist3"],
-      "savedPlaylists": ["playlist1", "playlist3"],
-      "recentlyPlayed": ["song7", "song1", "song5", "song3"]
-    },
-    "user2": {
-      "likedSongs": ["song2", "song4", "song6", "song8"],
-      "followedArtists": ["artist2", "artist4"],
-      "savedPlaylists": ["playlist2", "playlist4"],
-      "recentlyPlayed": ["song8", "song2", "song6", "song4"]
+      "likedSongs": ["song1", "song3", "song5", "song7", "song9", "song11", "song13", "song15"],
+      "followedArtists": ["artist1", "artist3", "artist5", "artist7"],
+      "savedPlaylists": ["playlist1", "playlist2", "playlist3", "playlist5", "playlist7"],
+      "recentlyPlayed": ["song7", "song1", "song9", "song13", "song5", "song11", "song15"]
     }
   },
   "categories": [
     {
       "id": "category1",
-      "name": "Pop",
-      "image": "https://i.scdn.co/image/ab67706f000000023c5a4aef5bf9efe0d038d844"
+      "name": "Podcasts",
+      "color": "#006450",
+      "image": "https://t.scdn.co/images/ad4d5c268a214f78920517e76e6ed107.jpeg"
     },
     {
       "id": "category2",
-      "name": "Hip-Hop",
-      "image": "https://i.scdn.co/image/ab67706f000000025a051a7b4c82f042b8390ccd"
+      "name": "Live Events",
+      "color": "#8400E7",
+      "image": "https://i.scdn.co/image/ab67706f00000002ffa215be1a4c64e3cbf59d1e"
     },
     {
       "id": "category3",
-      "name": "Rock",
-      "image": "https://i.scdn.co/image/ab67706f00000002fe6d8d1019d5b302213e3730"
+      "name": "Made For You",
+      "color": "#1E3264",
+      "image": "https://i.scdn.co/image/ab67706f00000002b0fe40a6e1692822f5a9d8f1"
     },
     {
       "id": "category4",
-      "name": "Chill",
-      "image": "https://i.scdn.co/image/ab67706f000000025f0ff9251e3cfe641160dc31"
+      "name": "New Releases",
+      "color": "#E8115B",
+      "image": "https://i.scdn.co/image/ab67706f000000027ea4d505212b9de1f72c5112"
     },
     {
       "id": "category5",
-      "name": "Workout",
-      "image": "https://i.scdn.co/image/ab67706f000000029249b35f23fb596b6f006a15"
+      "name": "Pop",
+      "color": "#148A08",
+      "image": "https://i.scdn.co/image/ab67fb8200005caf013ee3c983e6f60bf28bad5a"
     },
     {
       "id": "category6",
+      "name": "Hip-Hop",
+      "color": "#BC5900",
+      "image": "https://seed-mix-image.spotifycdn.com/v6/img/hip_hop/1Xyo4u8uXC1ZmMpatF05PJ/en/large"
+    },
+    {
+      "id": "category7",
+      "name": "Rock",
+      "color": "#E91429",
+      "image": "https://i.scdn.co/image/ab67706f00000002fe6d8d1019d5b302213e3730"
+    },
+    {
+      "id": "category8",
+      "name": "Mood",
+      "color": "#DC148C",
+      "image": "https://t.scdn.co/images/3710b68657574bc79df14bd74629e5ac"
+    },
+    {
+      "id": "category9",
+      "name": "Charts",
+      "color": "#8D67AB",
+      "image": "https://charts-images.scdn.co/assets/locale_en/regional/weekly/region_global_default.jpg"
+    },
+    {
+      "id": "category10",
+      "name": "Chill",
+      "color": "#0D73EC",
+      "image": "https://i.scdn.co/image/ab67706f000000025f0ff9251e3cfe641160dc31"
+    },
+    {
+      "id": "category11",
+      "name": "Workout",
+      "color": "#777777",
+      "image": "https://i.scdn.co/image/ab67706f000000029249b35f23fb596b6f006a15"
+    },
+    {
+      "id": "category12",
       "name": "Focus",
+      "color": "#503750",
       "image": "https://i.scdn.co/image/ab67706f00000002e4eadd417a05b2546e866934"
+    },
+    {
+      "id": "category13",
+      "name": "Party",
+      "color": "#BA5D07",
+      "image": "https://i.scdn.co/image/ab67706f000000025ec8c003898b36c6f73dfac7"
+    },
+    {
+      "id": "category14",
+      "name": "Indie",
+      "color": "#477D95",
+      "image": "https://i.scdn.co/image/ab67706f000000025f7327d3fdc71af27917adba"
     }
   ]
 }

@@ -5,11 +5,106 @@ import { BlurView } from 'expo-blur';
 import { useNavigation } from '@react-navigation/native';
 import Constants from 'expo-constants';
 import { ROUTES } from '../navigation/routes';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import musicData from '../data/data.json';
 
 const ProfileScreen = () => {
     const navigation = useNavigation();
+    const [username, setUsername] = useState('User');
     const headerHeight = Constants.statusBarHeight + 50;
     const scrollY = useRef(new Animated.Value(0)).current;
+
+    // Data dari JSON
+    const [userPlaylists, setUserPlaylists] = useState([]);
+    const [recentArtists, setRecentArtists] = useState([]);
+
+    const formatNumberWithDots = (num) => {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    };
+
+    // Fungsi untuk mengambil sumber gambar dari path lokal atau URL
+    const getImageSource = (imagePath) => {
+        if (!imagePath) return require('../assets/sileighty vintage.png');
+
+        if (imagePath.startsWith('assets/')) {
+            try {
+                // Penting: Require harus menggunakan path literal, tidak bisa dinamis
+                switch (imagePath) {
+                    // Artist covers
+                    case 'assets/artistcover/scorpions.png':
+                        return require('../assets/artistcover/scorpions.png');
+                    case 'assets/artistcover/linkinpark.png':
+                        return require('../assets/artistcover/linkinpark.png');
+
+                    // Default untuk placeholder image
+                    default:
+                        console.warn("Unknown local asset path:", imagePath);
+                        return require('../assets/sileighty vintage.png'); // Fallback ke image default
+                }
+            } catch (error) {
+                console.error("Error loading image:", error);
+                return require('../assets/sileighty vintage.png');
+            }
+        }
+
+        // Handle URL
+        return { uri: imagePath };
+    };
+
+    useEffect(() => {
+        // Load the username when component mounts
+        const loadUsername = async () => {
+            try {
+                const storedName = await AsyncStorage.getItem('userDisplayName');
+                if (storedName) {
+                    setUsername(storedName);
+                }
+            } catch (error) {
+                console.error('Error loading username:', error);
+            }
+        };
+
+        loadUsername();
+
+        // Langsung gunakan playlist dari JSON, ambil 3 playlist pertama
+        const playlists = musicData.playlists
+            .slice(0, 3) // Ambil 3 playlist pertama
+            .map(playlist => ({
+                id: playlist.id,
+                name: playlist.name,
+                cover: playlist.cover,
+                // Gunakan nilai yang pasti ada di json
+                saves: playlist.followers || 0,
+                creator: playlist.createdBy === 'spotify' ? 'Spotify' : username
+            }));
+
+        setUserPlaylists(playlists);
+
+        // Ambil artist langsung dari data JSON
+        const artists = musicData.artists
+            .slice(0, 4) // Ambil 4 artist pertama
+            .map(artist => ({
+                id: artist.id,
+                name: artist.name,
+                image: artist.image,
+                monthlyListeners: artist.monthlyListeners || 0
+            }));
+
+        setRecentArtists(artists);
+
+        // Refresh username when screen comes into focus
+        const unsubscribe = navigation.addListener('focus', loadUsername);
+        return unsubscribe;
+    }, [navigation]);
+
+    const formatNumber = (count) => {
+        if (count >= 1000000) {
+            return `${(count / 1000000).toFixed(1)}M`;
+        } else if (count >= 1000) {
+            return `${(count / 1000).toFixed(1)}K`;
+        }
+        return count.toString();
+    };
 
     // Animasi untuk opacity nama user di header
     const headerNameOpacity = scrollY.interpolate({
@@ -39,8 +134,6 @@ const ProfileScreen = () => {
         extrapolate: 'clamp'
     });
 
-    
-
     return (
         <View className="flex-1 bg-[#121212]">
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
@@ -65,7 +158,7 @@ const ProfileScreen = () => {
                         style={{ opacity: headerNameOpacity }}
                         className="text-white text-lg font-bold"
                     >
-                        Abii
+                        {username}
                     </Animated.Text>
 
                     {/* Icon menu yang muncul saat scroll */}
@@ -109,7 +202,7 @@ const ProfileScreen = () => {
                                 className="h-28 w-28 rounded-full"
                             />
                             <View className='flex flex-col gap-1 justify-center'>
-                                <Text className="text-white text-2xl font-bold">Abii</Text>
+                                <Text className="text-white text-2xl font-bold">{username}</Text>
                                 <View className='flex flex-row items-center'>
                                     <Text className="text-gray-400">
                                         <Text className="font-bold text-white">0</Text> followers
@@ -143,119 +236,81 @@ const ProfileScreen = () => {
                         <View className='flex flex-col gap-5'>
                             <Text className='text-xl text-white font-bold'>Playlists</Text>
                             <View className='flex flex-col gap-4'>
-                                <View className='flex flex-row gap-5'>
-                                    <Image
-                                        source={require('../assets/sileighty vintage.png')}
-                                        className="h-14 w-14"
-                                    />
-                                    <View className='flex flex-col'>
-                                        <Text className='text-white text-lg'>Your Top Songs 2023</Text>
-                                        <View className='flex flex-row items-center'>
-                                            <Text className='text-zinc-400 text-sm'>0 saves</Text>
-                                            <Entypo name="dot-single" size={13} color="gray" style={{ marginHorizontal: 1 }} />
-                                            <Text className='text-zinc-400 text-sm'>Spotify</Text>
-                                        </View>
-                                    </View>
-                                </View>
-
-                                <View className='flex flex-row gap-5'>
-                                    <Image
-                                        source={require('../assets/sileighty vintage.png')}
-                                        className="h-14 w-14"
-                                    />
-                                    <View className='flex flex-col'>
-                                        <Text className='text-white text-lg'>Road Trip</Text>
-                                        <View className='flex flex-row items-center'>
-                                            <Text className='text-zinc-400 text-sm'>0 saves</Text>
-                                            <Entypo name="dot-single" size={13} color="gray" style={{ marginHorizontal: 1 }} />
-                                            <Text className='text-zinc-400 text-sm'>Abii</Text>
-                                        </View>
-                                    </View>
-                                </View>
-
-                                <View className='flex flex-row gap-5'>
-                                    <Image
-                                        source={require('../assets/sileighty vintage.png')}
-                                        className="h-14 w-14"
-                                    />
-                                    <View className='flex flex-col'>
-                                        <Text className='text-white text-lg'>My Music Box</Text>
-                                        <View className='flex flex-row items-center'>
-                                            <Text className='text-zinc-400 text-sm'>0 saves</Text>
-                                            <Entypo name="dot-single" size={13} color="gray" style={{ marginHorizontal: 1 }} />
-                                            <Text className='text-zinc-400 text-sm'>Abii</Text>
-                                        </View>
-                                    </View>
-                                </View>
-
+                                {userPlaylists.length > 0 ? (
+                                    userPlaylists.map((playlist, index) => (
+                                        <TouchableOpacity
+                                            key={playlist.id}
+                                            className='flex flex-row gap-5'
+                                            onPress={() => navigation.navigate(ROUTES.PLAYLIST, { playlistId: playlist.id })}
+                                        >
+                                            <Image
+                                                source={getImageSource(playlist.cover)}
+                                                className="h-14 w-14"
+                                            />
+                                            <View className='flex flex-col'>
+                                                <Text className='text-white text-lg'>{playlist.name}</Text>
+                                                <View className='flex flex-row items-center'>
+                                                    <Text className='text-zinc-400 text-sm'>{formatNumberWithDots(playlist.saves)} saves</Text>
+                                                    <Entypo name="dot-single" size={13} color="gray" style={{ marginHorizontal: 1 }} />
+                                                    <Text className='text-zinc-400 text-sm'>{playlist.creator}</Text>
+                                                </View>
+                                            </View>
+                                        </TouchableOpacity>
+                                    ))
+                                ) : (
+                                    <Text className='text-zinc-400 text-sm'>No playlists saved yet</Text>
+                                )}
                             </View>
                         </View>
 
                         {/* See all playlists button */}
-                        <View className="items-center">
-                            <TouchableOpacity className='border border-zinc-500 rounded-full px-4 py-2 justify-center'>
-                                <Text className='text-white text-sm font-bold text-center'>See all playlists</Text>
-                            </TouchableOpacity>
-                        </View>
+                        {userPlaylists.length > 0 && (
+                            <View className="items-center">
+                                <TouchableOpacity
+                                    className='border border-zinc-500 rounded-full px-4 py-2 justify-center'
+                                    onPress={() => navigation.navigate(ROUTES.ALL_PLAYLIST)}
+                                >
+                                    <Text className='text-white text-sm font-bold text-center'>See all playlists</Text>
+                                </TouchableOpacity>
+                            </View>
+                        )}
 
-                        {/* Recently played artists section */}
+                        {/* Artists section */}
                         <View className='flex flex-col gap-5'>
                             <Text className='text-xl text-white font-bold'>Recently played artists</Text>
                             <View className='flex flex-col gap-4'>
-                                <View className='flex flex-row gap-5'>
-                                    <Image
-                                        source={require('../assets/sileighty vintage.png')}
-                                        className="h-14 w-14 rounded-full"
-                                    />
-                                    <View className='flex flex-col'>
-                                        <Text className='text-white text-lg'>Linkin Park</Text>
-                                        <Text className='text-zinc-400 text-sm'>29.455.500 followers</Text>
-                                    </View>
-                                </View>
-
-                                <View className='flex flex-row gap-5'>
-                                    <Image
-                                        source={require('../assets/sileighty vintage.png')}
-                                        className="h-14 w-14 rounded-full"
-                                    />
-                                    <View className='flex flex-col'>
-                                        <Text className='text-white text-lg'>Linkin Park</Text>
-                                        <Text className='text-zinc-400 text-sm'>29.455.500 followers</Text>
-                                    </View>
-                                </View>
-
-                                <View className='flex flex-row gap-5'>
-                                    <Image
-                                        source={require('../assets/sileighty vintage.png')}
-                                        className="h-14 w-14 rounded-full"
-                                    />
-                                    <View className='flex flex-col'>
-                                        <Text className='text-white text-lg'>Linkin Park</Text>
-                                        <Text className='text-zinc-400 text-sm'>29.455.500 followers</Text>
-                                    </View>
-                                </View>
-
-                                <View className='flex flex-row gap-5'>
-                                    <Image
-                                        source={require('../assets/sileighty vintage.png')}
-                                        className="h-14 w-14 rounded-full"
-                                    />
-                                    <View className='flex flex-col'>
-                                        <Text className='text-white text-lg'>Linkin Park</Text>
-                                        <Text className='text-zinc-400 text-sm'>29.455.500 followers</Text>
-                                    </View>
-                                </View>
-
+                                {recentArtists.length > 0 ? (
+                                    recentArtists.map((artist, index) => (
+                                        <View key={artist.id} className='flex flex-row gap-5'>
+                                            <Image
+                                                source={getImageSource(artist.image)}
+                                                className="h-14 w-14 rounded-full"
+                                            />
+                                            <View className="flex-1">
+                                                <Text className="text-white text-base font-bold">{artist.name}</Text>
+                                                <Text className="text-[#b3b3b3] text-xs">
+                                                    {formatNumber(artist.monthlyListeners)} followers
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    ))
+                                ) : (
+                                    <Text className='text-zinc-400 text-sm'>No artists available</Text>
+                                )}
                             </View>
                         </View>
 
                         {/* See all artists button */}
-                        <View className="items-center">
-                            <TouchableOpacity className='border border-zinc-500 rounded-full px-4 py-2 justify-center'>
-                                <Text className='text-white text-sm font-bold text-center'>See all artists</Text>
-                            </TouchableOpacity>
-                        </View>
-
+                        {recentArtists.length > 0 && (
+                            <View className="items-center">
+                                <TouchableOpacity
+                                    className='border border-zinc-500 rounded-full px-4 py-2 justify-center'
+                                    onPress={() => navigation.navigate(ROUTES.ALL_ARTIST)}
+                                >
+                                    <Text className='text-white text-sm font-bold text-center'>See all artists</Text>
+                                </TouchableOpacity>
+                            </View>
+                        )}
                     </View>
                 </View>
             </Animated.ScrollView>

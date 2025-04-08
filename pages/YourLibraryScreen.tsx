@@ -1,29 +1,124 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, Image, TouchableOpacity, SafeAreaView, StatusBar, ScrollView, FlatList } from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { AntDesign, Octicons, MaterialIcons, Feather } from '@expo/vector-icons';
 import ProfileButton from "../component/ProfileButton";
+import { useNavigation } from '@react-navigation/native';
+import musicData from '../data/data.json';
+import { ROUTES } from '../navigation/routes';
 
 const YourLibraryScreen = ({ navigation }) => {
-
     const [viewMode, setViewMode] = useState('list');
+    const [userPlaylists, setUserPlaylists] = useState([]);
+    const [filterOption, setFilterOption] = useState('All');
 
-    const playlists = [
-        { id: '1', title: 'Liked Songs', coverImage: require('../assets/sileighty vintage.png'), creator: 'Spotify', description: 'Liked Songs' },
-        { id: '2', title: 'Daily Mix 1', coverImage: require('../assets/sileighty vintage.png'), creator: 'Spotify', description: 'Personalized mix for you' },
-        { id: '3', title: 'Discover Weekly', coverImage: require('../assets/sileighty vintage.png'), creator: 'Spotify', description: 'New discoveries every Monday' },
-        { id: '4', title: 'Release Radar', coverImage: require('../assets/sileighty vintage.png'), creator: 'Spotify', description: 'New releases from artists you follow' },
-        { id: '5', title: 'Top Hits 2023', coverImage: require('../assets/sileighty vintage.png'), creator: 'User', description: 'Popular hits collection' },
-        { id: '6', title: 'Chill Vibes', coverImage: require('../assets/sileighty vintage.png'), creator: 'User', description: 'Relaxing playlist' },
-        { id: '7', title: 'Workout Mix', coverImage: require('../assets/sileighty vintage.png'), creator: 'User', description: 'High energy music' },
-        { id: '8', title: 'Road Trip', coverImage: require('../assets/sileighty vintage.png'), creator: 'User', description: 'Perfect for long drives' },
-        { id: 'add-artists', title: 'Add artists', coverImage: null, creator: '', description: 'Follow the artists you like', type: 'add-button' },
-        { id: 'add-podcasts', title: 'Add podcasts & shows', coverImage: null, creator: '', description: 'Follow podcasts & shows', type: 'add-button' },
-    ];
+    // Fungsi untuk mengambil sumber gambar dari path lokal atau URL
+    const getImageSource = (imagePath) => {
+        if (!imagePath) return null;
+
+        if (imagePath.startsWith('assets/')) {
+            try {
+                // Penting: Require harus menggunakan path literal, tidak bisa dinamis
+                switch (imagePath) {
+                    // Song covers
+                    case 'assets/songcover/blindinglight.png':
+                        return require('../assets/songcover/blindinglight.png');
+                    case 'assets/songcover/kissmemore.png':
+                        return require('../assets/songcover/kissmemore.png');
+                    case 'assets/songcover/rockyoulikeahurricane.png':
+                        return require('../assets/songcover/rockyoulikeahurricane.png');
+                    case 'assets/songcover/intheend.png':
+                        return require('../assets/songcover/intheend.png');
+                    case 'assets/songcover/numb.png':
+                        return require('../assets/songcover/numb.png');
+                    case 'assets/songcover/stilllovingyou.png':
+                        return require('../assets/songcover/stilllovingyou.png');
+                    case 'assets/songcover/anti-hero.png':
+                        return require('../assets/songcover/anti-hero.png');
+                    case 'assets/songcover/woman.png':
+                        return require('../assets/songcover/woman.png');
+
+                    // Playlist covers
+                    case 'assets/playlistcover/liked-songs.png':
+                        return require('../assets/playlistcover/liked-songs.png');
+
+                    // Default untuk placeholder image
+                    default:
+                        console.warn("Unknown local asset path:", imagePath);
+                        return require('../assets/sileighty vintage.png'); // Fallback ke image default
+                }
+            } catch (error) {
+                console.error("Error loading image:", error);
+                return require('../assets/sileighty vintage.png');
+            }
+        }
+
+        // Handle URL
+        return { uri: imagePath };
+    };
+
+    useEffect(() => {
+        // Gunakan semua playlist dari data JSON seperti di HomeScreen
+        const allPlaylists = musicData.playlists || [];
+        const userLibrary = musicData.userLibrary.user1 || {};
+
+        // Transformasi data playlist agar sesuai dengan format yang dibutuhkan
+        const formattedPlaylists = allPlaylists.map(playlist => ({
+            id: playlist.id,
+            title: playlist.name,
+            coverImage: playlist.cover,
+            creator: playlist.createdBy === 'spotify' ? 'Spotify' : 'You',
+            description: playlist.description,
+            type: 'playlist'
+        }));
+
+        // Tambahkan special playlist Liked Songs
+        const likedSongsPlaylist = {
+            id: 'liked-songs',
+            title: 'Liked Songs',
+            coverImage: "https://i.scdn.co/image/ab67706f000000025f0ff9251e3cfe641160dc31",
+            creator: 'Playlist',
+            description: 'A collection of your liked songs',
+            type: 'liked-songs'
+        };
+
+        // Tambahkan tombol "Add artists" dan "Add podcasts" di akhir
+        const additionalButtons = [
+            {
+                id: 'add-artists',
+                title: 'Add artists',
+                coverImage: null,
+                creator: '',
+                description: 'Follow the artists you like',
+                type: 'add-button'
+            },
+            {
+                id: 'add-podcasts',
+                title: 'Add podcasts & shows',
+                coverImage: null,
+                creator: '',
+                description: 'Follow podcasts & shows',
+                type: 'add-button'
+            }
+        ];
+
+        // Gabungkan semua data - liked songs di awal, lalu playlists, lalu tombol tambahan
+        const combinedPlaylists = [
+            likedSongsPlaylist,
+            ...formattedPlaylists,
+            ...additionalButtons
+        ];
+
+        setUserPlaylists(combinedPlaylists);
+    }, []);
 
     // Toggle between list and grid view
     const toggleViewMode = () => {
         setViewMode(viewMode === 'list' ? 'grid' : 'list');
+    };
+
+    const handleFilterChange = (filter) => {
+        setFilterOption(filter);
     };
 
     // Render item based on view mode
@@ -60,19 +155,30 @@ const YourLibraryScreen = ({ navigation }) => {
                             <Text className="text-white text-center justify-center text-sm" numberOfLines={1}>
                                 {item.title}
                             </Text>
-
                         </View>
                     </TouchableOpacity>
                 );
             }
         }
 
+        // Handle untuk playlist normal
+        const navigateToPlaylist = () => {
+            // Tidak navigasi untuk tombol "add"
+            if (item.type === 'add-button') return;
+
+            // Navigasi ke halaman playlist
+            navigation.navigate(ROUTES.PLAYLIST, { playlistId: item.id });
+        };
+
         if (viewMode === 'list') {
             // List View 
             return (
-                <TouchableOpacity className="flex-row items-center px-5 py-3">
+                <TouchableOpacity
+                    className="flex-row items-center px-5 py-3"
+                    onPress={navigateToPlaylist}
+                >
                     <Image
-                        source={item.coverImage}
+                        source={getImageSource(item.coverImage)}
                         className="h-20 w-20 rounded-sm"
                     />
                     <View className="ml-3 flex-1">
@@ -90,11 +196,12 @@ const YourLibraryScreen = ({ navigation }) => {
                 <TouchableOpacity
                     className="p-2"
                     style={{ width: '33.33%' }}
+                    onPress={navigateToPlaylist}
                 >
                     <View className="items-center">
                         <View className="items-center">
                             <Image
-                                source={item.coverImage}
+                                source={getImageSource(item.coverImage)}
                                 className="h-28 w-28 rounded-sm mb-2"
                             />
                         </View>
@@ -110,7 +217,6 @@ const YourLibraryScreen = ({ navigation }) => {
             );
         }
     };
-
 
     return (
         <SafeAreaView style={styles.container} className="bg-[#121212]">
@@ -142,8 +248,23 @@ const YourLibraryScreen = ({ navigation }) => {
                     showsHorizontalScrollIndicator={false}
                     className="px-4 py-3"
                 >
-                    <TouchableOpacity className="bg-[#333333] rounded-full px-5 py-2 mr-2">
-                        <Text className="text-white">Playlists</Text>
+                    <TouchableOpacity
+                        className={`${filterOption === 'All' ? 'bg-[#1DB954]' : 'bg-[#333333]'} rounded-full px-5 py-2 mr-2`}
+                        onPress={() => handleFilterChange('All')}
+                    >
+                        <Text className={`${filterOption === 'All' ? 'text-black' : 'text-white'}`}>All</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        className={`${filterOption === 'Playlists' ? 'bg-[#1DB954]' : 'bg-[#333333]'} rounded-full px-5 py-2 mr-2`}
+                        onPress={() => handleFilterChange('Playlists')}
+                    >
+                        <Text className={`${filterOption === 'Playlists' ? 'text-black' : 'text-white'}`}>Playlists</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        className={`${filterOption === 'Artists' ? 'bg-[#1DB954]' : 'bg-[#333333]'} rounded-full px-5 py-2 mr-2`}
+                        onPress={() => handleFilterChange('Artists')}
+                    >
+                        <Text className={`${filterOption === 'Artists' ? 'text-black' : 'text-white'}`}>Artists</Text>
                     </TouchableOpacity>
                 </ScrollView>
             </View>
@@ -158,7 +279,7 @@ const YourLibraryScreen = ({ navigation }) => {
                         <Text className="text-white">Recents</Text>
                     </View>
 
-                    { /* View Mode Toggle */}
+                    {/* View Mode Toggle */}
                     <TouchableOpacity onPress={toggleViewMode}>
                         {viewMode === 'list' ? (
                             <Feather name="grid" size={20} color="white" />
@@ -166,11 +287,10 @@ const YourLibraryScreen = ({ navigation }) => {
                             <MaterialIcons name="format-list-bulleted" size={20} color="white" />
                         )}
                     </TouchableOpacity>
-
                 </View>
 
                 <FlatList
-                    data={playlists}
+                    data={userPlaylists}
                     keyExtractor={item => item.id}
                     renderItem={renderItem}
                     numColumns={viewMode === 'grid' ? 3 : 1}
@@ -182,8 +302,7 @@ const YourLibraryScreen = ({ navigation }) => {
                     }}
                 />
             </View>
-
-        </SafeAreaView >
+        </SafeAreaView>
     );
 };
 
