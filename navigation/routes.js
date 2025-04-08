@@ -6,7 +6,12 @@ export const ROUTES = {
   MAIN: 'Main',
   HOME: 'Home',
   SEARCH: 'Search',
+  SEARCH_DETAIL: 'SearchDetail',
   LIBRARY: 'Your Library',
   PROFILE: 'Profile',
-  SETTINGS: 'Settings'
+  SETTINGS: 'Settings',
+  PLAYLIST: 'Playlist',
+  MEDIA_PLAYER: 'MediaPlayer',
+  ALL_PLAYLIST: 'AllPlaylist',
+  ALL_ARTIST: 'AllArtist',
 };

@@ -4,13 +4,31 @@ import { useNavigation } from '@react-navigation/native';
 import { FontAwesome6, Feather } from '@expo/vector-icons';
 import { ROUTES } from '../../navigation/routes';
 import Constants from 'expo-constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginAuth = () => {
     const navigation = useNavigation();
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const [username, setUsername] = useState('');
 
     const togglePasswordVisibility = () => {
         setIsPasswordVisible(!isPasswordVisible);
+    };
+
+    const handleLogin = async () => {
+        try {
+            // Save the username to AsyncStorage (or use default 'User' if empty)
+            const displayName = username.trim() ? username : 'User';
+            await AsyncStorage.setItem('userDisplayName', displayName);
+
+            // Navigate to main app
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'MainStack' }],
+            });
+        } catch (error) {
+            console.error('Error saving username:', error);
+        }
     };
 
     return (
@@ -39,6 +57,8 @@ const LoginAuth = () => {
                             <TextInput
                                 placeholderTextColor="#888"
                                 className="bg-[#2A2A2A] text-white p-4 rounded-md"
+                                value={username}
+                                onChangeText={setUsername}
                             />
                         </View>
 
@@ -70,12 +90,7 @@ const LoginAuth = () => {
                         <View className="items-center mt-8">
                             <TouchableOpacity
                                 className='bg-white rounded-full px-12 py-3'
-                                onPress={() => {
-                                    navigation.reset({
-                                        index: 0,
-                                        routes: [{ name: 'MainStack' }],
-                                    });
-                                }}
+                                onPress={handleLogin}
                             >
                                 <Text className='text-black text-lg font-bold text-center'>Log in</Text>
                             </TouchableOpacity>

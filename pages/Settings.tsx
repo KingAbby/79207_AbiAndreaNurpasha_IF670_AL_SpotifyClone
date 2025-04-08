@@ -1,16 +1,38 @@
 import { View, Text, TouchableOpacity, Image, StatusBar, ScrollView, StyleSheet, Modal, Pressable } from 'react-native';
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Entypo, FontAwesome, FontAwesome6, Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import { BlurView } from 'expo-blur';
 import { ROUTES } from '../navigation/routes';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Settings = () => {
     const navigation = useNavigation();
+    const [username, setUsername] = useState('User');
     const headerHeight = Constants.statusBarHeight + 50;
     const [logoutModalVisible, setLogoutModalVisible] = useState(false);
+
+    useEffect(() => {
+        // Load the username when component mounts
+        const loadUsername = async () => {
+            try {
+                const storedName = await AsyncStorage.getItem('userDisplayName');
+                if (storedName) {
+                    setUsername(storedName);
+                }
+            } catch (error) {
+                console.error('Error loading username:', error);
+            }
+        };
+
+        loadUsername();
+
+        // Refresh username when screen comes into focus
+        const unsubscribe = navigation.addListener('focus', loadUsername);
+        return unsubscribe;
+    }, [navigation]);
 
     const handleLogout = () => {
         setLogoutModalVisible(false);
@@ -62,7 +84,7 @@ const Settings = () => {
                                 />
                             </View>
                             <View className='flex flex-col gap-1 justify-center'>
-                                <Text className="text-white text-lg font-bold">Abii</Text>
+                                <Text className="text-white text-lg font-bold">{username}</Text>
                                 <Text className="text-gray-400">View Profile</Text>
                             </View>
                         </View>

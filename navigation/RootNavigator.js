@@ -1,11 +1,9 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ROUTES } from './routes';
-
 import AuthStack from './StackNavigator';
 import MainStack from './MainStackNavigator';
-import ProfileScreen from '../pages/ProfileScreen';
-import Settings from '../pages/Settings';
+
 
 const RootStack = createStackNavigator();
 

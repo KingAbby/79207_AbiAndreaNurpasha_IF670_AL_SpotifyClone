@@ -10,15 +10,17 @@ import { ROUTES } from './routes';
 
 const Tab = createBottomTabNavigator();
 
+export const tabBarStyle = {
+  backgroundColor: '#121212',
+  borderTopWidth: 0
+};
+
 const TabNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarStyle: {
-          backgroundColor: '#121212',
-          borderTopWidth: 0
-        },
+        tabBarStyle: tabBarStyle,
         tabBarActiveTintColor: '#FFFFFF',
         tabBarInactiveTintColor: '#B3B3B3',
         contentStyle: {

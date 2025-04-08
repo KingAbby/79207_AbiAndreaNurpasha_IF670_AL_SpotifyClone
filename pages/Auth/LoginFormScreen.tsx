@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, StackActions } from '@react-navigation/native';
 import { FontAwesome6, Entypo, FontAwesome, Feather, MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from "expo-linear-gradient";
 import { ROUTES } from '../../navigation/routes';
@@ -82,7 +82,22 @@ const LoginFormScreen = () => {
                                 <Text className='text-center text-white'>Don't have an Account?</Text>
                                 <TouchableOpacity
                                     className='self-center'
-                                    onPress={() => navigation.navigate(ROUTES.SIGNUP_FORM)}
+                                    onPress={() => {
+                                        // Cari kondisi navigasi saat ini
+                                        const state = navigation.getState();
+
+                                        // Cek apakah ada SignupForm di stack
+                                        const signupFormIndex = state.routes.findIndex(route => route.name === ROUTES.SIGNUP_FORM);
+
+                                        if (signupFormIndex >= 0) {
+                                            // Jika SignupForm ada di stack, kembalikan ke posisi tersebut
+                                            const popAction = StackActions.pop(state.index - signupFormIndex);
+                                            navigation.dispatch(popAction);
+                                        } else {
+                                            // Jika tidak ada, navigasi ke halaman baru
+                                            navigation.navigate(ROUTES.SIGNUP_FORM);
+                                        }
+                                    }}
                                 >
                                     <Text className='text-center text-white font-bold'>Sign up</Text>
                                 </TouchableOpacity>
