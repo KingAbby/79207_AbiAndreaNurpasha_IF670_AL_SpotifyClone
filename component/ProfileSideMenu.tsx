@@ -12,7 +12,6 @@ const ProfileSideMenu = (props) => {
     const [username, setUsername] = useState('User');
 
     useEffect(() => {
-        // Load the username when component mounts
         const loadUsername = async () => {
             try {
                 const storedName = await AsyncStorage.getItem('userDisplayName');
@@ -26,7 +25,6 @@ const ProfileSideMenu = (props) => {
 
         loadUsername();
 
-        // Set up listener for when the drawer opens to refresh the username
         const unsubscribe = navigation.addListener('focus', loadUsername);
         return unsubscribe;
     }, [navigation]);
@@ -91,16 +89,5 @@ const ProfileSideMenu = (props) => {
         </DrawerContentScrollView>
     );
 };
-
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         paddingTop: 50,
-//     },
-//     profileImage: {
-//         height: 45,
-//         width: 45,
-//     }
-// });
 
 export default ProfileSideMenu;

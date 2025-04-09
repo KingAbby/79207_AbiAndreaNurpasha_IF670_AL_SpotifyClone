@@ -18,10 +18,8 @@ const AllArtistScreen = () => {
     const toggleFollow = (artistId) => {
         setFollowedArtistIds(prev => {
             if (prev.includes(artistId)) {
-                // Unfollow: Hapus ID dari array
                 return prev.filter(id => id !== artistId);
             } else {
-                // Follow: Tambah ID ke array
                 return [...prev, artistId];
             }
         });
@@ -35,24 +33,20 @@ const AllArtistScreen = () => {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
 
-    // Fungsi untuk mengambil sumber gambar dari path lokal atau URL
     const getImageSource = (imagePath) => {
         if (!imagePath) return require('../assets/sileighty vintage.png');
 
         if (imagePath.startsWith('assets/')) {
             try {
-                // Penting: Require harus menggunakan path literal, tidak bisa dinamis
                 switch (imagePath) {
-                    // Artist covers
                     case 'assets/artistcover/scorpions.png':
                         return require('../assets/artistcover/scorpions.png');
                     case 'assets/artistcover/linkinpark.png':
                         return require('../assets/artistcover/linkinpark.png');
 
-                    // Default untuk placeholder image
                     default:
                         console.warn("Unknown local asset path:", imagePath);
-                        return require('../assets/sileighty vintage.png'); // Fallback ke image default
+                        return require('../assets/sileighty vintage.png');
                 }
             } catch (error) {
                 console.error("Error loading image:", error);
@@ -60,12 +54,10 @@ const AllArtistScreen = () => {
             }
         }
 
-        // Handle URL
         return { uri: imagePath };
     };
 
     useEffect(() => {
-        // Load the username
         const loadUsername = async () => {
             try {
                 const storedName = await AsyncStorage.getItem('userDisplayName');
@@ -79,7 +71,6 @@ const AllArtistScreen = () => {
 
         loadUsername();
 
-        // Load all artists from JSON
         const artists = musicData.artists
             .map(artist => ({
                 id: artist.id,
@@ -95,7 +86,7 @@ const AllArtistScreen = () => {
         <View className="flex-1 bg-[#121212]">
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
 
-            {/* Header dengan BlurView seperti di ProfileScreen */}
+            {/* Header dengan BlurView */}
             <BlurView
                 intensity={80}
                 tint="dark"
@@ -110,7 +101,7 @@ const AllArtistScreen = () => {
                         <FontAwesome6 name="angle-left" size={24} color="white" />
                     </TouchableOpacity>
 
-                    {/* Title di tengah */}
+                    {/* Title */}
                     <Text className="text-white text-lg font-bold">
                         Recently played artists
                     </Text>
@@ -130,7 +121,6 @@ const AllArtistScreen = () => {
                                     key={artist.id}
                                     className="flex flex-row gap-5 items-center"
                                     onPress={() => {
-                                        // Bisa diperbarui dengan navigasi ke halaman artist detail jika ada
                                         console.log(`Navigate to artist: ${artist.name}`);
                                     }}
                                 >

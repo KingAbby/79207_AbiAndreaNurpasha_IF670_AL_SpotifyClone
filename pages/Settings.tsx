@@ -15,7 +15,6 @@ const Settings = () => {
     const [logoutModalVisible, setLogoutModalVisible] = useState(false);
 
     useEffect(() => {
-        // Load the username when component mounts
         const loadUsername = async () => {
             try {
                 const storedName = await AsyncStorage.getItem('userDisplayName');
@@ -29,7 +28,6 @@ const Settings = () => {
 
         loadUsername();
 
-        // Refresh username when screen comes into focus
         const unsubscribe = navigation.addListener('focus', loadUsername);
         return unsubscribe;
     }, [navigation]);
@@ -71,7 +69,7 @@ const Settings = () => {
             >
 
                 {/* Profile section */}
-                <View className="flex flex-col gap-7 p-4">
+                <View className="flex flex-col gap-5 p-4 mb-40">
                     <TouchableOpacity
                         className='flex flex-row justify-between items-center'
                         onPress={() => navigation.navigate(ROUTES.PROFILE)}
@@ -93,7 +91,7 @@ const Settings = () => {
                     </TouchableOpacity>
 
                     {/* Settings options */}
-                    <View className='flex flex-col gap-7'>
+                    <View className='flex flex-col gap-6'>
                         <TouchableOpacity className='flex flex-row justify-between'>
                             <Text className="text-white text-lg">Account</Text>
                             <FontAwesome name='angle-right' size={20} color='white' />

@@ -17,11 +17,10 @@ const LoginAuth = () => {
 
     const handleLogin = async () => {
         try {
-            // Save the username to AsyncStorage (or use default 'User' if empty)
+            
             const displayName = username.trim() ? username : 'User';
             await AsyncStorage.setItem('userDisplayName', displayName);
 
-            // Navigate to main app
             navigation.reset({
                 index: 0,
                 routes: [{ name: 'MainStack' }],

@@ -12,7 +12,6 @@ const SearchScreen = () => {
     const navigation = useNavigation();
 
     useEffect(() => {
-        // Load categories from data.json
         setCategories(musicData.categories);
     }, []);
 
@@ -84,7 +83,7 @@ const SearchScreen = () => {
                         ))}
                     </View>
 
-                    {/* Extra space di bagian bawah agar konten tidak terpotong tab bar */}
+                    
                     <View style={{ height: 100 }} />
                 </View>
             </ScrollView>

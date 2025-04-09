@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, SafeAreaView, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, SafeAreaView, TouchableOpacity, StyleSheet,Platform } from 'react-native';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import { FontAwesome6, Entypo, FontAwesome, Feather, MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from "expo-linear-gradient";
 import { ROUTES } from '../../navigation/routes';
+import Constants from 'expo-constants';
 
 
 const LoginFormScreen = () => {
@@ -17,6 +18,8 @@ const LoginFormScreen = () => {
                     {/* Back Button */}
                     <TouchableOpacity
                         onPress={() => navigation.goBack()}
+                        className="p-2 z-10"
+                        style={Platform.OS === 'android' ? { marginTop: Constants.statusBarHeight } : {}}
                     >
                         <FontAwesome6 name="angle-left" size={24} color="white" />
                     </TouchableOpacity>
@@ -83,18 +86,14 @@ const LoginFormScreen = () => {
                                 <TouchableOpacity
                                     className='self-center'
                                     onPress={() => {
-                                        // Cari kondisi navigasi saat ini
                                         const state = navigation.getState();
 
-                                        // Cek apakah ada SignupForm di stack
                                         const signupFormIndex = state.routes.findIndex(route => route.name === ROUTES.SIGNUP_FORM);
 
                                         if (signupFormIndex >= 0) {
-                                            // Jika SignupForm ada di stack, kembalikan ke posisi tersebut
                                             const popAction = StackActions.pop(state.index - signupFormIndex);
                                             navigation.dispatch(popAction);
                                         } else {
-                                            // Jika tidak ada, navigasi ke halaman baru
                                             navigation.navigate(ROUTES.SIGNUP_FORM);
                                         }
                                     }}
