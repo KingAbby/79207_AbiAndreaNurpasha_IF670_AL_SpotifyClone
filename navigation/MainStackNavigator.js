@@ -2,7 +2,6 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ROUTES } from './routes';
 
-// Import screens and navigators
 import MainDrawerNavigator from './MainDrawerNavigator';
 import PlaylistScreen from '../pages/PlaylistScreen';
 import ProfileScreen from '../pages/ProfileScreen';

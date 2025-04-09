@@ -6,19 +6,19 @@ import ProfileButton from "../component/ProfileButton";
 import { useNavigation } from '@react-navigation/native';
 import musicData from '../data/data.json';
 import { ROUTES } from '../navigation/routes';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const YourLibraryScreen = ({ navigation }) => {
     const [viewMode, setViewMode] = useState('list');
+    const [username, setUsername] = useState('User');
     const [userPlaylists, setUserPlaylists] = useState([]);
     const [filterOption, setFilterOption] = useState('All');
 
-    // Fungsi untuk mengambil sumber gambar dari path lokal atau URL
     const getImageSource = (imagePath) => {
         if (!imagePath) return null;
 
         if (imagePath.startsWith('assets/')) {
             try {
-                // Penting: Require harus menggunakan path literal, tidak bisa dinamis
                 switch (imagePath) {
                     // Song covers
                     case 'assets/songcover/blindinglight.png':
@@ -42,10 +42,9 @@ const YourLibraryScreen = ({ navigation }) => {
                     case 'assets/playlistcover/liked-songs.png':
                         return require('../assets/playlistcover/liked-songs.png');
 
-                    // Default untuk placeholder image
                     default:
                         console.warn("Unknown local asset path:", imagePath);
-                        return require('../assets/sileighty vintage.png'); // Fallback ke image default
+                        return require('../assets/sileighty vintage.png');
                 }
             } catch (error) {
                 console.error("Error loading image:", error);
@@ -53,26 +52,35 @@ const YourLibraryScreen = ({ navigation }) => {
             }
         }
 
-        // Handle URL
         return { uri: imagePath };
     };
 
     useEffect(() => {
-        // Gunakan semua playlist dari data JSON seperti di HomeScreen
+        const loadUsername = async () => {
+            try {
+                const storedName = await AsyncStorage.getItem('userDisplayName');
+                if (storedName) {
+                    setUsername(storedName);
+                }
+            } catch (error) {
+                console.error('Error loading username:', error);
+            }
+        };
+
+        loadUsername();
+
         const allPlaylists = musicData.playlists || [];
         const userLibrary = musicData.userLibrary.user1 || {};
 
-        // Transformasi data playlist agar sesuai dengan format yang dibutuhkan
         const formattedPlaylists = allPlaylists.map(playlist => ({
             id: playlist.id,
             title: playlist.name,
             coverImage: playlist.cover,
-            creator: playlist.createdBy === 'spotify' ? 'Spotify' : 'You',
+            creator: playlist.createdBy === 'spotify' ? 'Spotify' : username,
             description: playlist.description,
             type: 'playlist'
         }));
 
-        // Tambahkan special playlist Liked Songs
         const likedSongsPlaylist = {
             id: 'liked-songs',
             title: 'Liked Songs',
@@ -82,7 +90,6 @@ const YourLibraryScreen = ({ navigation }) => {
             type: 'liked-songs'
         };
 
-        // Tambahkan tombol "Add artists" dan "Add podcasts" di akhir
         const additionalButtons = [
             {
                 id: 'add-artists',
@@ -102,7 +109,6 @@ const YourLibraryScreen = ({ navigation }) => {
             }
         ];
 
-        // Gabungkan semua data - liked songs di awal, lalu playlists, lalu tombol tambahan
         const combinedPlaylists = [
             likedSongsPlaylist,
             ...formattedPlaylists,
@@ -110,9 +116,8 @@ const YourLibraryScreen = ({ navigation }) => {
         ];
 
         setUserPlaylists(combinedPlaylists);
-    }, []);
+    }, [username]);
 
-    // Toggle between list and grid view
     const toggleViewMode = () => {
         setViewMode(viewMode === 'list' ? 'grid' : 'list');
     };
@@ -121,15 +126,12 @@ const YourLibraryScreen = ({ navigation }) => {
         setFilterOption(filter);
     };
 
-    // Render item based on view mode
     const renderItem = ({ item, index }) => {
-        // Item untuk add button
         if (item.type === 'add-button') {
             const isArtistButton = item.id === 'add-artists';
             const buttonStyle = isArtistButton ? "rounded-full" : "rounded-lg";
 
             if (viewMode === 'list') {
-                // Tampilan list untuk add button
                 return (
                     <TouchableOpacity className="flex-row items-center px-5 py-3">
                         <View className={`h-20 w-20 bg-[#2a2a2a] ${buttonStyle} justify-center items-center`}>
@@ -142,7 +144,6 @@ const YourLibraryScreen = ({ navigation }) => {
                     </TouchableOpacity>
                 );
             } else {
-                // Tampilan grid untuk add button
                 return (
                     <TouchableOpacity
                         className="p-2"
@@ -161,17 +162,13 @@ const YourLibraryScreen = ({ navigation }) => {
             }
         }
 
-        // Handle untuk playlist normal
         const navigateToPlaylist = () => {
-            // Tidak navigasi untuk tombol "add"
             if (item.type === 'add-button') return;
 
-            // Navigasi ke halaman playlist
             navigation.navigate(ROUTES.PLAYLIST, { playlistId: item.id });
         };
 
         if (viewMode === 'list') {
-            // List View 
             return (
                 <TouchableOpacity
                     className="flex-row items-center px-5 py-3"
@@ -191,7 +188,6 @@ const YourLibraryScreen = ({ navigation }) => {
                 </TouchableOpacity>
             );
         } else {
-            // Grid View 
             return (
                 <TouchableOpacity
                     className="p-2"
@@ -294,7 +290,7 @@ const YourLibraryScreen = ({ navigation }) => {
                     keyExtractor={item => item.id}
                     renderItem={renderItem}
                     numColumns={viewMode === 'grid' ? 3 : 1}
-                    key={viewMode} // Important: Forces re-render when switching layouts
+                    key={viewMode}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{
                         paddingTop: 5,

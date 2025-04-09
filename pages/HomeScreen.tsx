@@ -23,7 +23,6 @@ const HomeScreen = () => {
 
         if (imagePath.startsWith('assets/')) {
             try {
-                // Penting: Require harus menggunakan path literal, tidak bisa dinamis
                 switch (imagePath) {
                     // Song covers
                     case 'assets/songcover/blindinglight.png':
@@ -49,7 +48,6 @@ const HomeScreen = () => {
                     case 'assets/artistcover/linkinpark.png':
                         return require('../assets/artistcover/linkinpark.png');
 
-                    // Tambahkan kasus lain untuk setiap asset lokal
                     default:
                         console.warn("Unknown local asset path:", imagePath);
                         return { uri: 'https://via.placeholder.com/350' };
@@ -60,19 +58,15 @@ const HomeScreen = () => {
             }
         }
 
-        // Handle URL
         return { uri: imagePath };
     };
 
     useEffect(() => {
-        // Set up the data
         setPlaylists(musicData.playlists);
         setArtists(musicData.artists);
         setSongs(musicData.songs);
 
-        // Create top mixes based on artists
         const mixes = musicData.artists.map(artist => {
-            // Count how many songs this artist has
             const artistSongCount = musicData.songs.filter(song => song.artistId === artist.id).length;
 
             return {
@@ -84,7 +78,6 @@ const HomeScreen = () => {
         });
         setTopMixes(mixes);
 
-        // Get recently played songs data
         const recentSongIds = musicData.userLibrary.user1.recentlyPlayed;
         const recent = recentSongIds.map(id => {
             const song = musicData.songs.find(s => s.id === id);
@@ -211,21 +204,17 @@ const HomeScreen = () => {
                                     key={mix.id}
                                     className='mr-4 w-36'
                                     onPress={() => {
-                                        // Extract artist ID from the mix ID (format: mix-artistId)
                                         const artistId = mix.id.split('-')[1];
 
-                                        // Find the artist object
                                         const artist = artists.find(a => a.id === artistId);
 
                                         if (artist) {
-                                            // Filter songs by this artist
                                             const artistSongs = songs.filter(song => song.artistId === artistId)
                                                 .map(song => ({
                                                     ...song,
-                                                    artistName: artist.name // Add artist name to each song
+                                                    artistName: artist.name
                                                 }));
 
-                                            // Create a custom playlist object for this artist
                                             const artistPlaylist = {
                                                 id: `artist-mix-${artistId}`,
                                                 name: mix.title,
@@ -235,7 +224,6 @@ const HomeScreen = () => {
                                                 createdBy: 'spotify'
                                             };
 
-                                            // Navigate to the playlist screen with custom data
                                             navigation.navigate(ROUTES.PLAYLIST, {
                                                 playlistId: artistPlaylist.id,
                                                 customPlaylist: artistPlaylist,
@@ -327,10 +315,10 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     header: {
-        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight || 0 : 50, // Adjust based on platform
+        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight || 0 : 50,
         borderBottomWidth: 0,
-        elevation: 0, // No shadow on Android
-        shadowOpacity: 0, // No shadow on iOS
+        elevation: 0,
+        shadowOpacity: 0,
         zIndex: 10,
     },
 });

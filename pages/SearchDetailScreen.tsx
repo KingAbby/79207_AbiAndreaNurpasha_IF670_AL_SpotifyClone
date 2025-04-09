@@ -14,7 +14,6 @@ const SearchDetailScreen = () => {
     const textInputRef = useRef(null);
 
     useEffect(() => {
-        // Create mixed results of songs and playlists
         const songsWithType = musicData.songs.map(song => {
             const artist = musicData.artists.find(a => a.id === song.artistId);
             return {
@@ -39,7 +38,6 @@ const SearchDetailScreen = () => {
             originalData: playlist
         }));
 
-        // Interleave songs and playlists to create a mixed list
         let mixed = [];
         const maxLength = Math.max(songsWithType.length, playlistsWithType.length);
 
@@ -48,11 +46,9 @@ const SearchDetailScreen = () => {
             if (i < playlistsWithType.length) mixed.push(playlistsWithType[i]);
         }
 
-        // Limit results for performance
         setAllItems(mixed);
         setSearchResults(mixed.slice(0, 15));
 
-        // Auto focus search input
         setTimeout(() => {
             if (textInputRef.current) {
                 textInputRef.current.focus();
@@ -60,17 +56,14 @@ const SearchDetailScreen = () => {
         }, 100);
     }, []);
 
-    // Search function
     const handleSearch = (text) => {
         setSearchQuery(text);
 
         if (!text.trim()) {
-            // If search query is empty, show initial results (limited to 15)
             setSearchResults(allItems.slice(0, 15));
             return;
         }
 
-        // Filter items based on search query
         const filteredItems = allItems.filter(item => {
             const titleMatch = item.title.toLowerCase().includes(text.toLowerCase());
             const subtitleMatch = item.subtitle.toLowerCase().includes(text.toLowerCase());
@@ -80,7 +73,6 @@ const SearchDetailScreen = () => {
         setSearchResults(filteredItems);
     };
 
-    // Fungsi untuk mengambil sumber gambar
     const getImageSource = (imagePath) => {
         if (!imagePath) return require('../assets/sileighty vintage.png');
 
@@ -115,26 +107,21 @@ const SearchDetailScreen = () => {
             }
         }
 
-        // Handle URL
         return { uri: imagePath };
     };
 
-    // Handle item press
     const handleItemPress = (item) => {
         if (item.type === 'song') {
-            // Create a simple playlist for search results
             const searchPlaylist = {
                 id: 'search-results',
                 name: 'Search Results',
                 cover: item.image
             };
 
-            // Get all songs
             const allSongs = searchResults
                 .filter(result => result.type === 'song')
                 .map(result => result.originalData);
 
-            // Find index of current song
             const songIndex = allSongs.findIndex(song => song.id === item.originalData.id);
 
             navigation.navigate(ROUTES.MEDIA_PLAYER, {
@@ -144,7 +131,6 @@ const SearchDetailScreen = () => {
                 songs: allSongs
             });
         } else if (item.type === 'playlist') {
-            // Extract the actual playlist ID (remove 'playlist-' prefix)
             const playlistId = item.originalData.id;
             navigation.navigate(ROUTES.PLAYLIST, { playlistId });
         }
@@ -166,7 +152,7 @@ const SearchDetailScreen = () => {
                             style={{ fontWeight: 'semibold' }}
                             value={searchQuery}
                             onChangeText={handleSearch}
-                            className="flex-1 ml-2 text-white"
+                            className="flex-1 ml-2 text-white items-center"
                             returnKeyType="search"
                             autoFocus={true}
                         />

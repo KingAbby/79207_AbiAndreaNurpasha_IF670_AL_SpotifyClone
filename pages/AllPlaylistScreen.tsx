@@ -18,13 +18,11 @@ const AllPlaylistsScreen = () => {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
 
-    // Fungsi untuk mengambil sumber gambar dari path lokal atau URL
     const getImageSource = (imagePath) => {
         if (!imagePath) return require('../assets/sileighty vintage.png');
 
         if (imagePath.startsWith('assets/')) {
             try {
-                // Penting: Require harus menggunakan path literal, tidak bisa dinamis
                 switch (imagePath) {
                     case 'assets/songcover/blindinglight.png':
                         return require('../assets/songcover/blindinglight.png');
@@ -43,10 +41,9 @@ const AllPlaylistsScreen = () => {
                     case 'assets/songcover/woman.png':
                         return require('../assets/songcover/woman.png');
 
-                    // Default untuk placeholder image
                     default:
                         console.warn("Unknown local asset path:", imagePath);
-                        return require('../assets/sileighty vintage.png'); // Fallback ke image default
+                        return require('../assets/sileighty vintage.png');
                 }
             } catch (error) {
                 console.error("Error loading image:", error);
@@ -54,12 +51,10 @@ const AllPlaylistsScreen = () => {
             }
         }
 
-        // Handle URL
         return { uri: imagePath };
     };
 
     useEffect(() => {
-        // Load the username
         const loadUsername = async () => {
             try {
                 const storedName = await AsyncStorage.getItem('userDisplayName');
@@ -73,7 +68,6 @@ const AllPlaylistsScreen = () => {
 
         loadUsername();
 
-        // Load all playlists from JSON
         const playlists = musicData.playlists
             .map(playlist => ({
                 id: playlist.id,
@@ -90,7 +84,7 @@ const AllPlaylistsScreen = () => {
         <View className="flex-1 bg-[#121212]">
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
 
-            {/* Header dengan BlurView seperti di ProfileScreen */}
+            {/* Header dengan BlurView */}
             <BlurView
                 intensity={80}
                 tint="dark"
@@ -105,7 +99,7 @@ const AllPlaylistsScreen = () => {
                         <FontAwesome6 name="angle-left" size={24} color="white" />
                     </TouchableOpacity>
 
-                    {/* Title di tengah */}
+                    {/* Title */}
                     <Text className="text-white text-lg font-bold">
                         Playlists
                     </Text>
@@ -137,7 +131,7 @@ const AllPlaylistsScreen = () => {
                                                 {formatNumberWithDots(playlist.saves)} saves
                                             </Text>
                                             <Entypo name="dot-single" size={13} color="gray" style={{ marginHorizontal: 1 }} />
-                                            <Text className="text-zinc-400 text-sm">{playlist.creator}</Text>
+                                            <Text className="text-zinc-400 text-sm">{username}</Text>
                                         </View>
                                     </View>
                                 </TouchableOpacity>

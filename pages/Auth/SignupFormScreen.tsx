@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, SafeAreaView, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
+import { View, Text, SafeAreaView, TouchableOpacity, TextInput, StyleSheet, Platform } from 'react-native';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import { FontAwesome6, Entypo, FontAwesome, Feather } from '@expo/vector-icons';
 import { LinearGradient } from "expo-linear-gradient";
 import { ROUTES } from '../../navigation/routes';
+import Constants from 'expo-constants';
 
 const SignupFormScreen = () => {
     const navigation = useNavigation();
@@ -16,6 +17,8 @@ const SignupFormScreen = () => {
                     {/* Back Button */}
                     <TouchableOpacity
                         onPress={() => navigation.goBack()}
+                        className="p-2 z-10"
+                        style={Platform.OS === 'android' ? { marginTop: Constants.statusBarHeight } : {}}
                     >
                         <FontAwesome6 name="angle-left" size={24} color="white" />
                     </TouchableOpacity>
@@ -77,18 +80,14 @@ const SignupFormScreen = () => {
                                 <TouchableOpacity
                                     className='self-center'
                                     onPress={() => {
-                                        // Cari kondisi navigasi saat ini
                                         const state = navigation.getState();
 
-                                        // Cek apakah ada LoginForm di stack
                                         const loginFormIndex = state.routes.findIndex(route => route.name === ROUTES.LOGIN_FORM);
 
                                         if (loginFormIndex >= 0) {
-                                            // Jika LoginForm ada di stack, kembalikan ke posisi tersebut
                                             const popAction = StackActions.pop(state.index - loginFormIndex);
                                             navigation.dispatch(popAction);
                                         } else {
-                                            // Jika tidak ada, navigasi ke halaman baru
                                             navigation.navigate(ROUTES.LOGIN_FORM);
                                         }
                                     }}
@@ -112,7 +111,7 @@ const styles = StyleSheet.create({
     },
     icon: {
         position: 'absolute',
-        left: 20, // Much more spacing from left edge
+        left: 20,
     },
     buttonText: {
         width: '100%',

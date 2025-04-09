@@ -21,6 +21,7 @@ const PlaylistScreen = () => {
     const [playlist, setPlaylist] = useState(null);
     const [songs, setSongs] = useState([]);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [shuffleActive, setShuffleActive] = useState(false);
     const [createdBy, setCreatedBy] = useState('');
 
     const getImageSource = (imagePath) => {
@@ -28,7 +29,6 @@ const PlaylistScreen = () => {
 
         if (imagePath.startsWith('assets/')) {
             try {
-                // Penting: Require harus menggunakan path literal, tidak bisa dinamis
                 switch (imagePath) {
                     // Song covers
                     case 'assets/songcover/blindinglight.png':
@@ -54,7 +54,6 @@ const PlaylistScreen = () => {
                     case 'assets/artistcover/linkinpark.png':
                         return require('../assets/artistcover/linkinpark.png');
 
-                    // Tambahkan kasus lain untuk setiap asset lokal
                     default:
                         console.warn("Unknown local asset path:", imagePath);
                         return { uri: 'https://via.placeholder.com/350' };
@@ -65,19 +64,8 @@ const PlaylistScreen = () => {
             }
         }
 
-        // Handle URL
         return { uri: imagePath };
     };
-
-    useEffect(() => {
-        // Gunakan customPlaylist jika ada, atau temukan dari data JSON
-        const playlistData = customPlaylist || musicData.playlists.find(p => p.id === playlistId);
-        setPlaylist(playlistData);
-
-        if (playlistData) {
-            // ...kode yang sudah ada...
-        }
-    }, [playlistId, customPlaylist, username]);
 
     const headerNameOpacity = scrollY.interpolate({
         inputRange: [0, 140, 180],
@@ -85,7 +73,6 @@ const PlaylistScreen = () => {
         extrapolate: 'clamp'
     });
 
-    // Cover image animations - fade out and move away faster
     const coverImageOpacity = scrollY.interpolate({
         inputRange: [0, 80, 120],
         outputRange: [1, 0.3, 0],
@@ -104,7 +91,6 @@ const PlaylistScreen = () => {
         extrapolate: 'clamp'
     });
 
-    // Playlist info (name and description) animations - stay longer
     const playlistInfoOpacity = scrollY.interpolate({
         inputRange: [0, 140, 180],
         outputRange: [1, 0.5, 0],
@@ -120,9 +106,9 @@ const PlaylistScreen = () => {
     const headerBorderColor = scrollY.interpolate({
         inputRange: [0, 140, 180],
         outputRange: [
-            'rgba(40, 40, 40, 0)', // Transparent initially
-            'rgba(40, 40, 40, 0.3)', // Slightly visible
-            'rgba(40, 40, 40, 0.8)' // More visible
+            'rgba(40, 40, 40, 0)',
+            'rgba(40, 40, 40, 0.3)',
+            'rgba(40, 40, 40, 0.8)'
         ],
         extrapolate: 'clamp'
     });
@@ -140,7 +126,6 @@ const PlaylistScreen = () => {
     });
 
     useEffect(() => {
-        // Load the username when component mounts
         const loadUsername = async () => {
             try {
                 const storedName = await AsyncStorage.getItem('userDisplayName');
@@ -154,7 +139,6 @@ const PlaylistScreen = () => {
 
         loadUsername();
 
-        // Refresh username when screen comes into focus
         const unsubscribe = navigation.addListener('focus', loadUsername);
         return unsubscribe;
     }, [navigation]);
@@ -164,20 +148,18 @@ const PlaylistScreen = () => {
             setPlaylist(route.params.customPlaylist);
             setSongs(route.params.customSongs);
 
-            // Determine creator's name for custom playlist
             if (route.params.customPlaylist.createdBy === 'spotify') {
                 setCreatedBy('Spotify');
             } else {
                 setCreatedBy(username);
             }
-            return; // Exit early - we already have all data we need
+            return;
         }
-        // Find the playlist by id
+
         const playlistData = musicData.playlists.find(p => p.id === playlistId);
         setPlaylist(playlistData);
 
         if (playlistData) {
-            // Get all songs in this playlist
             const playlistSongs = playlistData.songs.map(songId => {
                 const song = musicData.songs.find(s => s.id === songId);
                 if (song) {
@@ -192,7 +174,6 @@ const PlaylistScreen = () => {
 
             setSongs(playlistSongs);
 
-            // Determine creator's name
             if (playlistData.createdBy === 'spotify') {
                 setCreatedBy('Spotify');
             } else {
@@ -208,6 +189,10 @@ const PlaylistScreen = () => {
             </View>
         );
     }
+
+    const toggleShuffle = () => {
+        setShuffleActive(!shuffleActive);
+    };
 
     const togglePlayPause = () => {
         setIsPlaying(!isPlaying);
@@ -239,7 +224,7 @@ const PlaylistScreen = () => {
                     borderBottomColor: headerBorderColor
                 }}
             >
-                {/* Animated background that fades in when scrolling */}
+                {/* Animated fades in background */}
                 <Animated.View
                     className="absolute top-0 left-0 right-0 bottom-0"
                     style={{
@@ -262,7 +247,7 @@ const PlaylistScreen = () => {
                         <FontAwesome6 name="angle-left" size={24} color="white" />
                     </TouchableOpacity>
 
-                    {/* Playlist name that appears when scrolling */}
+                    {/* Header Title */}
                     <Animated.Text
                         style={{ opacity: headerNameOpacity }}
                         className="text-white text-lg font-bold"
@@ -328,7 +313,10 @@ const PlaylistScreen = () => {
                                 </Text>
 
                                 {/* Username & Profile */}
-                                <View className='flex-row gap-2 items-center'>
+                                <TouchableOpacity
+                                    className='flex-row gap-2 items-center'
+                                    onPress={() => { navigation.navigate(ROUTES.PROFILE) }}
+                                >
                                     <Image
                                         source={require('../assets/sileighty vintage.png')}
                                         className="h-5 w-5 rounded-full"
@@ -336,7 +324,7 @@ const PlaylistScreen = () => {
                                     <Text className="text-white text-xs font-bold mr-2">
                                         {createdBy}
                                     </Text>
-                                </View>
+                                </TouchableOpacity>
                             </View>
 
                             <View className="flex-row items-center">
@@ -367,8 +355,15 @@ const PlaylistScreen = () => {
                     </View>
 
                     <View className="flex-row items-center">
-                        <TouchableOpacity className="mr-4">
-                            <Ionicons name="shuffle" size={24} color="#1DB954" />
+                        <TouchableOpacity
+                            className="mr-4"
+                            onPress={toggleShuffle}
+                        >
+                            <Ionicons
+                                name="shuffle"
+                                size={24}
+                                color={shuffleActive ? "#1DB954" : "#b3b3b3"}
+                            />
                         </TouchableOpacity>
                         <TouchableOpacity
                             className="bg-[#1DB954] w-[42px] h-[42px] rounded-full justify-center items-center"

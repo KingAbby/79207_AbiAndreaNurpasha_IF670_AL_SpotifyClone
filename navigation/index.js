@@ -1,13 +1,15 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import DrawerNavigator from './DrawerNavigator';
 import RootNavigator from './RootNavigator';
+import { PlayerProvider } from '../context/PlayerContext';
 
 const Navigation = () => {
   return (
-    <NavigationContainer>
-      <RootNavigator />
-    </NavigationContainer>
+    <PlayerProvider>
+      <NavigationContainer>
+        <RootNavigator />
+      </NavigationContainer>
+    </PlayerProvider>
   );
 };
 

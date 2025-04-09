@@ -7,14 +7,18 @@ import Constants from 'expo-constants';
 import { ROUTES } from '../navigation/routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import musicData from '../data/data.json';
+import EditProfileDrawer from '../component/EditProfileDrawer';
+
 
 const ProfileScreen = () => {
     const navigation = useNavigation();
     const [username, setUsername] = useState('User');
+    const [isEditDrawerVisible, setIsEditDrawerVisible] = useState(false);
     const headerHeight = Constants.statusBarHeight + 50;
     const scrollY = useRef(new Animated.Value(0)).current;
 
-    // Data dari JSON
+    const profileImage = require('../assets/sileighty vintage.png');
+
     const [userPlaylists, setUserPlaylists] = useState([]);
     const [recentArtists, setRecentArtists] = useState([]);
 
@@ -22,13 +26,11 @@ const ProfileScreen = () => {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
 
-    // Fungsi untuk mengambil sumber gambar dari path lokal atau URL
     const getImageSource = (imagePath) => {
         if (!imagePath) return require('../assets/sileighty vintage.png');
 
         if (imagePath.startsWith('assets/')) {
             try {
-                // Penting: Require harus menggunakan path literal, tidak bisa dinamis
                 switch (imagePath) {
                     // Artist covers
                     case 'assets/artistcover/scorpions.png':
@@ -36,10 +38,9 @@ const ProfileScreen = () => {
                     case 'assets/artistcover/linkinpark.png':
                         return require('../assets/artistcover/linkinpark.png');
 
-                    // Default untuk placeholder image
                     default:
                         console.warn("Unknown local asset path:", imagePath);
-                        return require('../assets/sileighty vintage.png'); // Fallback ke image default
+                        return require('../assets/sileighty vintage.png');
                 }
             } catch (error) {
                 console.error("Error loading image:", error);
@@ -47,12 +48,20 @@ const ProfileScreen = () => {
             }
         }
 
-        // Handle URL
         return { uri: imagePath };
     };
 
+    const handleSaveProfile = async (newUsername) => {
+        try {
+            await AsyncStorage.setItem('userDisplayName', newUsername);
+            setUsername(newUsername);
+            setIsEditDrawerVisible(false);
+        } catch (error) {
+            console.error('Error saving username:', error);
+        }
+    };
+
     useEffect(() => {
-        // Load the username when component mounts
         const loadUsername = async () => {
             try {
                 const storedName = await AsyncStorage.getItem('userDisplayName');
@@ -66,23 +75,20 @@ const ProfileScreen = () => {
 
         loadUsername();
 
-        // Langsung gunakan playlist dari JSON, ambil 3 playlist pertama
         const playlists = musicData.playlists
-            .slice(0, 3) // Ambil 3 playlist pertama
+            .slice(0, 3)
             .map(playlist => ({
                 id: playlist.id,
                 name: playlist.name,
                 cover: playlist.cover,
-                // Gunakan nilai yang pasti ada di json
                 saves: playlist.followers || 0,
                 creator: playlist.createdBy === 'spotify' ? 'Spotify' : username
             }));
 
         setUserPlaylists(playlists);
 
-        // Ambil artist langsung dari data JSON
         const artists = musicData.artists
-            .slice(0, 4) // Ambil 4 artist pertama
+            .slice(0, 4)
             .map(artist => ({
                 id: artist.id,
                 name: artist.name,
@@ -92,10 +98,9 @@ const ProfileScreen = () => {
 
         setRecentArtists(artists);
 
-        // Refresh username when screen comes into focus
         const unsubscribe = navigation.addListener('focus', loadUsername);
         return unsubscribe;
-    }, [navigation]);
+    }, [username, navigation]);
 
     const formatNumber = (count) => {
         if (count >= 1000000) {
@@ -106,28 +111,24 @@ const ProfileScreen = () => {
         return count.toString();
     };
 
-    // Animasi untuk opacity nama user di header
     const headerNameOpacity = scrollY.interpolate({
         inputRange: [0, 60, 90],
         outputRange: [0, 0.5, 1],
         extrapolate: 'clamp'
     });
 
-    // Animasi untuk opacity profil info (fadeout saat scroll)
     const profileInfoOpacity = scrollY.interpolate({
         inputRange: [0, 60, 90],
         outputRange: [1, 0.5, 0],
         extrapolate: 'clamp'
     });
 
-    // Animasi untuk scaling profil info (mengecil saat scroll)
     const profileInfoScale = scrollY.interpolate({
         inputRange: [0, 60, 90],
         outputRange: [1, 0.95, 0.9],
         extrapolate: 'clamp'
     });
 
-    // Animasi untuk translasi Y profil info (bergerak ke atas saat scroll)
     const profileInfoTranslateY = scrollY.interpolate({
         inputRange: [0, 60, 90],
         outputRange: [0, -10, -20],
@@ -153,7 +154,7 @@ const ProfileScreen = () => {
                         <FontAwesome6 name="angle-left" size={24} color="white" />
                     </TouchableOpacity>
 
-                    {/* Nama user yang akan muncul saat scroll */}
+                    {/* Username */}
                     <Animated.Text
                         style={{ opacity: headerNameOpacity }}
                         className="text-white text-lg font-bold"
@@ -161,7 +162,7 @@ const ProfileScreen = () => {
                         {username}
                     </Animated.Text>
 
-                    {/* Icon menu yang muncul saat scroll */}
+                    {/* Icon */}
                     <Animated.View
                         style={{
                             opacity: headerNameOpacity,
@@ -219,7 +220,10 @@ const ProfileScreen = () => {
                     {/* Profile Menu */}
                     <View className="flex flex-col gap-10">
                         <View className="flex flex-row gap-5 items-center">
-                            <TouchableOpacity className='border border-zinc-500 rounded-full px-4 py-2 self-start'>
+                            <TouchableOpacity
+                                className='border border-zinc-500 rounded-full px-4 py-2 self-start'
+                                onPress={() => setIsEditDrawerVisible(true)}
+                            >
                                 <Text className='text-white font-bold'>Edit</Text>
                             </TouchableOpacity>
 
@@ -314,6 +318,15 @@ const ProfileScreen = () => {
                     </View>
                 </View>
             </Animated.ScrollView>
+            
+            {/* Edit Profile Bottom Drawer */}
+            <EditProfileDrawer
+                isVisible={isEditDrawerVisible}
+                onClose={() => setIsEditDrawerVisible(false)}
+                currentUsername={username}
+                onSave={handleSaveProfile}
+                profileImage={profileImage}
+            />
         </View>
     );
 };

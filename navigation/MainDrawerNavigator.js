@@ -17,7 +17,9 @@ const MainDrawerNavigator = () => {
         drawerStyle: {
           backgroundColor: '#121212',
           width: '75%',
-        }
+          zIndex: 999,
+        },
+        overlayColor: 'rgba(0,0,0,0.7)',
       }}
     >
       <Drawer.Screen name={ROUTES.MAIN} component={TabNavigator} />
